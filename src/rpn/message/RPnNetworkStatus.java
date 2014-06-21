@@ -485,6 +485,7 @@ public class RPnNetworkStatus {
                 slaveReqConsumerThread_.start();
             }
 
+
             /*
              * MASTER REQ SUBS
              */
@@ -513,6 +514,7 @@ public class RPnNetworkStatus {
         log(clientID + " has being acknowledged as SLAVE of RPNSESSION with ID : " + MKPCommandModule.SESSION_ID_ + '\n');
 
         if (clientID.compareTo(clientID_) == 0) {
+
 
             // SLAVE SUBS to RPN COMMAND TOPIC
             if (commandSubscriberThread_ == null)

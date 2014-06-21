@@ -70,8 +70,10 @@ public class MKPGlassPane extends JPanel {
 
 		menu_.setHighlightState();
 
-        	if (RPnNetworkStatus.instance().isOnline() && !RPnNetworkStatus.instance().isMaster())
+        	if (RPnNetworkStatus.instance().isOnline() && !RPnNetworkStatus.instance().isMaster()) {
+			menu_.setPupilWaitingState();
             		RPnHttpPoller.POLLING_MODE = RPnHttpPoller.TEXT_POLLER;
+		}
 	}
 
 	if (mode == DRAW_MODE) {
@@ -82,8 +84,11 @@ public class MKPGlassPane extends JPanel {
 
 		menu_.setDrawState();
 
-        	if (RPnNetworkStatus.instance().isOnline() && !RPnNetworkStatus.instance().isMaster())
+        	if (RPnNetworkStatus.instance().isOnline() && !RPnNetworkStatus.instance().isMaster()) {
+			menu_.setPupilWaitingState();
             		RPnHttpPoller.POLLING_MODE = RPnHttpPoller.OBJ_POLLER;
+
+		}
 	}
 
        	if (RPnNetworkStatus.instance().isOnline() && RPnNetworkStatus.instance().isMaster())
@@ -127,10 +132,6 @@ public class MKPGlassPane extends JPanel {
 
 
 	} else  { // already initiated ... so we have a mode !
-
-        	if (RPnNetworkStatus.instance().isOnline() && !RPnNetworkStatus.instance().isMaster()
-			&& backgroundImage_ != null)
-			g.drawImage(backgroundImage_.getImage(),(int)Math.round(getBounds().getX()),(int)Math.round(getBounds().getY()),null);
 
 		//Graphics2D g2d = (Graphics2D)g;
 		//g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.5f));
@@ -240,7 +241,6 @@ class MKPGlassPaneMouseAdapter extends MouseAdapter {
 
 		if (pane_.parentFrame_.getGlassState() == MKPGlassFrame.INIT_GLASS_STATE) {
 
-			//pane_.parentFrame_.setLayout(null);
 	
 			pane_.parentFrame_.setGlassState(MKPGlassFrame.CONFIGURED_GLASS_STATE);
 
@@ -254,7 +254,6 @@ class MKPGlassPaneMouseAdapter extends MouseAdapter {
 			pane_.parentFrame_.setLocation(x_loc_onscr - 
 							pane_.parentFrame_.getWidth(),
 							y_loc_onscr - pane_.parentFrame_.getHeight());
-
 
 			pane_.clear();
 			pane_.menu_.setReadyState();
@@ -467,7 +466,6 @@ class MKPControlMenu extends JPopupMenu {
 
                     public void actionPerformed(ActionEvent e) {
 
-
 			renderer_.parentFrame_.execCloseCommand();
 
                     }
@@ -486,6 +484,7 @@ class MKPControlMenu extends JPopupMenu {
 		highlightMode_.setEnabled(false);
 		drawMode_.setEnabled(false);
 		clear_.setEnabled(false);
+		scrCapture_.setEnabled(false);
 		colorSettings_.setEnabled(false);
 	}
 
@@ -503,6 +502,7 @@ class MKPControlMenu extends JPopupMenu {
 
 			highlightMode_.setEnabled(true);
 			drawMode_.setEnabled(true);
+
 		}
 
 		clear_.setEnabled(true);

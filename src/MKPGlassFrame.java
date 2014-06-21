@@ -44,9 +44,9 @@ public class MKPGlassFrame extends JFrame {
     public static int INIT_GLASS_STATE = 0;
     public static int CONFIGURED_GLASS_STATE = 1;
 
-    public static float INIT_GLASS_OPACITY = 0.7f;
-    public static float CONFIGURED_GLASS_OPACITY = 0.3f;
-    public static float CONFIGURED_PUPIL_GLASS_OPACITY = 1.f;
+    public static float INIT_GLASS_OPACITY = 0.8f;
+    public static float CONFIGURED_GLASS_OPACITY = 0.8f;
+    public static float CONFIGURED_PUPIL_GLASS_OPACITY = 0.8f;
 
     private static boolean TRANSLUCENCY_SUPPORT = false;
 
@@ -60,13 +60,13 @@ public class MKPGlassFrame extends JFrame {
     ViewingTransform viewingTransf_; 
     MKPGlassPane pad_;
     int glassState_;
-    JFrame testFrame;
+    MKPBackgroundFrame bckgdFrame_;
+    Dimension savedSize_;
+    Point savedLocation_;
 
     private MKPGlassFrame() {    
         
         super("markPad Window");
-
-        //setLayout(null);
 
         setSize(Toolkit.getDefaultToolkit().getScreenSize().width,Toolkit.getDefaultToolkit().getScreenSize().height);
         //setLocationRelativeTo(null);
@@ -160,9 +160,16 @@ public class MKPGlassFrame extends JFrame {
 
     public void execSetPadBackgroundCommand(SerializableBufferedImage bi) {
 
-	//pad_.setBackgroundImage(bi);
-	pad_.invalidate();
-	pad_.repaint();
+	bckgdFrame_.setSize(getSize());
+	bckgdFrame_.setLocation(getLocation());
+
+	bckgdFrame_.bckgdPanel_.setBackgroundImage(bi);
+
+	setVisible(false);
+	
+	bckgdFrame_.setVisible(true);
+	bckgdFrame_.bckgdPanel_.invalidate();
+	bckgdFrame_.bckgdPanel_.repaint();
 
 	setVisible(true);
 
@@ -221,16 +228,8 @@ public class MKPGlassFrame extends JFrame {
 	pad_.menu_.setReadyState();
 
         if (RPnNetworkStatus.instance().isOnline() && !RPnNetworkStatus.instance().isMaster()) {
-
-			/*testFrame = new JFrame("");
-			testFrame.setLayout(null);
-			testFrame.setSize(getSize());
-			testFrame.setLocation(getLocation());*/
-
-			setVisible(false);
-			/*testFrame.setUndecorated(true);
-			testFrame.setVisible(true);*/
-
+	
+		bckgdFrame_ = new MKPBackgroundFrame();
         	RPnHttpPoller.POLLING_MODE = RPnHttpPoller.OBJ_POLLER;
 	}
     }

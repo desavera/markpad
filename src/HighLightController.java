@@ -42,6 +42,7 @@ public class HighLightController implements MKPGlassUI {
         		    (RPnNetworkStatus.instance().isOnline() && RPnNetworkStatus.instance().isMaster())) {
     			point2_ = e.getPoint();
     			installedPanel_.repaint();
+
 			}
   		}
 
@@ -51,6 +52,7 @@ public class HighLightController implements MKPGlassUI {
 			if ((!RPnNetworkStatus.instance().isOnline()) ||
         		    (RPnNetworkStatus.instance().isOnline() && RPnNetworkStatus.instance().isMaster())) {
      			point1_ = e.getPoint();
+
 			}
 
   		}

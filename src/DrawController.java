@@ -59,6 +59,7 @@ public class DrawController implements MKPGlassUI  {
                         getViewingTransform().dcInverseTransform(dcPoint,wcPoint);
 
                         wpath_.moveTo(wcPoint.getX(),wcPoint.getY());
+
 			}
       		}
 
@@ -92,7 +93,8 @@ public class DrawController implements MKPGlassUI  {
                         wpath_.lineTo(wcPoint.getX(),wcPoint.getY());
 
                         installedPanel_.repaint();
-                }
+
+			}
 
 		}
         };

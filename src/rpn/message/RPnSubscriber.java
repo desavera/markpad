@@ -195,8 +195,6 @@ public class RPnSubscriber implements MessageListener,RPnMessageListener {
 
 	else {
 
-		System.out.println("WILL ChANGE");
-
             try {
 
             	SerializableBufferedImage bi = (SerializableBufferedImage) obj;

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+libdir=../lib
+
+java -Dmkphome=.. -jar ../lib/mkp.jar

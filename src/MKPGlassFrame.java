@@ -44,9 +44,9 @@ public class MKPGlassFrame extends JFrame {
     public static int INIT_GLASS_STATE = 0;
     public static int CONFIGURED_GLASS_STATE = 1;
 
-    public static float INIT_GLASS_OPACITY = 0.8f;
-    public static float CONFIGURED_GLASS_OPACITY = 0.8f;
-    public static float CONFIGURED_PUPIL_GLASS_OPACITY = 0.8f;
+    public static float INIT_GLASS_OPACITY = 0.3f;
+    public static float CONFIGURED_GLASS_OPACITY = 0.3f;
+    public static float CONFIGURED_PUPIL_GLASS_OPACITY = 0.3f;
 
     private static boolean TRANSLUCENCY_SUPPORT = false;
 

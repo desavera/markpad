@@ -61,6 +61,7 @@ public class MKPGlassFrame extends JFrame {
     MKPGlassPane pad_;
     int glassState_;
     MKPBackgroundFrame bckgdFrame_;
+    MKPControlFrame controlFrame_;
     Dimension savedSize_;
     Point savedLocation_;
 
@@ -93,6 +94,9 @@ public class MKPGlassFrame extends JFrame {
 	//setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
 
 	glassState_ = INIT_GLASS_STATE;
+
+
+	controlFrame_ = new MKPControlFrame(this);
 
 	addWindowListener(   
 	      new java.awt.event.WindowAdapter()   

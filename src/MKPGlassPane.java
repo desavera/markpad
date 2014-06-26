@@ -503,6 +503,11 @@ class MKPControlMenu extends JPopupMenu {
 			highlightMode_.setEnabled(true);
 			drawMode_.setEnabled(true);
 
+			renderer_.parentFrame_.controlFrame_.pack();
+			renderer_.parentFrame_.controlFrame_.setVisible(true);
+
+			
+
 		}
 
 		clear_.setEnabled(true);

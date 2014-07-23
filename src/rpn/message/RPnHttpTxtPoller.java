@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  *
  * @author mvera
  */
-public class RPnHttpPoller implements RPnResetableListener {
+public class RPnHttpTxtPoller implements RPnResetableListener {
     
 
     public static int  TEXT_POLLER = 0;
@@ -28,8 +28,7 @@ public class RPnHttpPoller implements RPnResetableListener {
     private String hitURL_ = null;
     private boolean end_ = false;
 
-    // OBJ and TXT Pollers have being created instead
-    private RPnHttpPoller(RPnMessageListener messageParser,String hitURL) {
+    public RPnHttpTxtPoller(RPnMessageListener messageParser,String hitURL) {
         
         messageParser_ = messageParser;
         hitURL_ = hitURL.toString();

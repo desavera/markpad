@@ -25,7 +25,7 @@ public class RPnConsumerThread extends Thread {
         if (RPnNetworkStatus.instance().isFirewalled()) {
 
             System.out.println("WARN : a Http Polling context will be started for... " + queueName);
-            consumer_ = new RPnHttpPoller(new RPnConsumer(queueName,persistent,false),
+            consumer_ = new RPnHttpTxtPoller(new RPnConsumer(queueName,persistent,false),
                                           RPnHttpPoller.buildHitURL(queueName));
         } else
 

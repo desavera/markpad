@@ -10,6 +10,8 @@ import javax.naming.*;
 import javax.jms.*;
 import java.io.StringBufferInputStream;
 import org.xml.sax.helpers.XMLReaderFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -212,6 +214,7 @@ public class RPnConsumer implements RPnResetableListener {
 
      public void parseMessageObject(Object obj) {
 
+        Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO, "Object message received and not treated !");
      }
 
     public void parseMessageText(String text) {

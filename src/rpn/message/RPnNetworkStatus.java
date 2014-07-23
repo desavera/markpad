@@ -109,9 +109,7 @@ public class RPnNetworkStatus {
     public static String RPN_MEDIATORPROXY_LISTENING_TAG="SUBSREC";
     public static String RPN_MEDIATORPROXY_LOG_MSG_TAG="LOG_MSG";
 
-    //public static String RPN_MEDIATORPROXY_URL="http://" + SERVERNAME + ":8080/rpnmediatorproxy/rpnmediatorproxy?REQ_ID=";
-    //public static String RPN_MEDIATORPROXY_URL="http://" + SERVERNAME + ":8080/mkpmediatorproxy/";    
-    public static String RPN_MEDIATORPROXY_URL="http://" + SERVERNAME + ":8080/rpnmediatorproxy/";    
+    public static String RPN_MEDIATORPROXY_URL="http://" + SERVERNAME + ":8080/mkpmediatorproxy/";    
 
     public static String ACTIVATED_FRAME_TITLE = "NO_TITLE";
 
@@ -365,7 +363,7 @@ public class RPnNetworkStatus {
                 try {
 
                     System.out.println("WARN : a Http Polling context will be started...");
-                    masterResetConsumer_ = new RPnHttpPoller(new RPnConsumer(RPN_MASTER_QUEUE_NAME,false,false),
+                    masterResetConsumer_ = new RPnHttpTxtPoller(new RPnConsumer(RPN_MASTER_QUEUE_NAME,false,false),
                                           RPnHttpPoller.buildHitURL(RPN_MASTER_QUEUE_NAME));
                 } catch (java.net.MalformedURLException ex) {
                     
@@ -397,7 +395,7 @@ public class RPnNetworkStatus {
                 try {
 
                     System.out.println("WARN : a Http Polling context will be started...");
-                    masterCheckConsumer_ = new RPnHttpPoller(new RPnConsumer(RPN_MASTER_QUEUE_NAME,false,false),
+                    masterCheckConsumer_ = new RPnHttpTxtPoller(new RPnConsumer(RPN_MASTER_QUEUE_NAME,false,false),
                                           RPnHttpPoller.buildHitURL(RPN_MASTER_QUEUE_NAME));
                 } catch (java.net.MalformedURLException ex) {
 
@@ -476,6 +474,12 @@ public class RPnNetworkStatus {
             if (commandPublisher_ == null)
                 commandPublisher_ = new RPnHttpPublisher(RPN_COMMAND_TOPIC_NAME);
 
+            // MASTER SUBS to RPN COMMAND TOPIC (specific to MKP)
+            if (commandSubscriberThread_ == null)
+                commandSubscriberThread_ = new RPnSubscriberThread(RPN_COMMAND_TOPIC_NAME);
+
+            commandSubscriberThread_.start();
+
             /*
              * SLAVE REQ RECEIVE
              */
@@ -515,6 +519,11 @@ public class RPnNetworkStatus {
 
         if (clientID.compareTo(clientID_) == 0) {
 
+            /*
+             * RPN COMMAND PUBLISH
+             */
+            if (commandPublisher_ == null)
+                commandPublisher_ = new RPnHttpPublisher(RPN_COMMAND_TOPIC_NAME);
 
             // SLAVE SUBS to RPN COMMAND TOPIC
             if (commandSubscriberThread_ == null)

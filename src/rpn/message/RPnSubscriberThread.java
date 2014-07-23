@@ -17,6 +17,9 @@ public class RPnSubscriberThread extends Thread {
 
     private RPnMessageListener subscriber_ = null;
 
+    private RPnSubscriberThread objSubscriberThread_ = null;
+    private RPnSubscriberThread txtSubscriberThread_ = null;
+
     public RPnSubscriberThread(String topicName) {
 
         try {
@@ -25,8 +28,10 @@ public class RPnSubscriberThread extends Thread {
         if (RPnNetworkStatus.instance().isFirewalled()) {
 
             System.out.println("WARN : a Http Polling context will be started...");
-            subscriber_ = new RPnHttpPoller(new RPnSubscriber(topicName,false),
-                                            RPnHttpPoller.buildHitURL(topicName));
+            objSubscriberThread_ = new RPnSubscriberThread(new RPnHttpObjPoller(new RPnSubscriber(topicName,false),
+                                            RPnHttpPoller.buildHitURL(topicName)));
+            txtSubscriberThread_ = new RPnSubscriberThread(new RPnHttpTxtPoller(new RPnSubscriber(topicName,false),
+                                            RPnHttpPoller.buildHitURL(topicName)));
         }
 
         else
@@ -38,18 +43,32 @@ public class RPnSubscriberThread extends Thread {
 
     }
 
-    public RPnSubscriberThread(RPnSubscriber subscriber) {
+    public RPnSubscriberThread(RPnMessageListener subscriber) {
 
         subscriber_ = subscriber;
     }
 
 
     public void run() {
-        subscriber_.startsListening();
+	if (subscriber_ != null)
+        	subscriber_.startsListening();
+
+	else {
+	
+		objSubscriberThread_.start();
+		txtSubscriberThread_.start();
+	}
     }
 
     public void unsubscribe() {
-        subscriber_.stopsListening();
+	if (subscriber_ != null)
+        	subscriber_.stopsListening();
+
+	else {
+
+		objSubscriberThread_.unsubscribe();
+		txtSubscriberThread_.unsubscribe();
+	}
     }
 }
 

@@ -19,6 +19,8 @@ public class MKPGlassPane extends JPanel {
     public static int HIGHLIGHT_MODE = 0;
     public static int DRAW_MODE = 1;
 
+    public static volatile boolean ACTIVE_SCR_CAPTURE = false;
+
     Boolean doClear_;
     HighLightController highLightController_;
     DrawController drawController_;
@@ -26,6 +28,7 @@ public class MKPGlassPane extends JPanel {
     Color markColor_ = Color.RED;
 
     MKPGlassUI currentController_;	
+    int currentMode_;
     MKPGlassFrame parentFrame_;
     MKPGlassPaneMouseAdapter mouseAdapter_;
 
@@ -59,8 +62,14 @@ public class MKPGlassPane extends JPanel {
 
   public void setMarkColor(Color color) {markColor_ = color;}
 
+
+  /*
+   * no need to keep switching modes over the network...
+   * as we take the uniform OBJMSG approach there will be no difference anymore.
+   */
   public void setMarkMode(int mode) {
 
+	currentMode_ = mode;
 
 	if (mode == HIGHLIGHT_MODE) {
 
@@ -72,7 +81,6 @@ public class MKPGlassPane extends JPanel {
 
         	if (RPnNetworkStatus.instance().isOnline() && !RPnNetworkStatus.instance().isMaster()) {
 			menu_.setPupilWaitingState();
-            		RPnHttpPoller.POLLING_MODE = RPnHttpPoller.TEXT_POLLER;
 		}
 	}
 
@@ -86,13 +94,9 @@ public class MKPGlassPane extends JPanel {
 
         	if (RPnNetworkStatus.instance().isOnline() && !RPnNetworkStatus.instance().isMaster()) {
 			menu_.setPupilWaitingState();
-            		RPnHttpPoller.POLLING_MODE = RPnHttpPoller.OBJ_POLLER;
 
 		}
 	}
-
-       	if (RPnNetworkStatus.instance().isOnline() && RPnNetworkStatus.instance().isMaster())
-		RPnNetworkStatus.instance().sendCommand(MKPXMLer.buildChangeModeXML(mode));
 
 	//clear();
 
@@ -150,6 +154,7 @@ public class MKPGlassPane extends JPanel {
 
      try {
 
+
 	Robot robot = new Robot();
 
 
@@ -160,8 +165,21 @@ public class MKPGlassPane extends JPanel {
  
 	backgroundImage_ = new SerializableBufferedImage(robot.createScreenCapture(captureRect));
 	ImageIO.write(backgroundImage_.getImage(), "JPG", new File("mkp.jpeg"));
-       	if (RPnNetworkStatus.instance().isOnline() && RPnNetworkStatus.instance().isMaster())
+       	if (RPnNetworkStatus.instance().isOnline() && RPnNetworkStatus.instance().isMaster()) {
+		System.out.println("INFO : sending background image over the network...");
+
+		int currentMode = currentMode_;
+
+		setMarkMode(DRAW_MODE);
+
+		Thread.sleep(500);
+
 		RPnNetworkStatus.instance().sendCommand(backgroundImage_);
+
+		Thread.sleep(500);
+
+		setMarkMode(currentMode);
+	}
 
      } catch (Exception ex) {
 
@@ -281,11 +299,16 @@ class MKPGlassPaneMouseAdapter extends MouseAdapter {
 
 				try { 
 
+					// the first time should print... and then depend on the ON|OFF mechanism...
+					pane_.scrCapture();
+
 					Thread.sleep(500);
+	
+					ScrCaptureRobot scrRobot = new ScrCaptureRobot(pane_);
+					scrRobot.start();
 
 				} catch (Exception ex) { ex.printStackTrace();}
 
-				pane_.scrCapture();
 			}
 		}
 
@@ -308,6 +331,7 @@ class MKPGlassPaneMouseAdapter extends MouseAdapter {
 
 }
 
+
 class MKPControlMenu extends JPopupMenu {
 
 
@@ -321,7 +345,6 @@ class MKPControlMenu extends JPopupMenu {
 	JMenuItem drawMode_ = new JMenuItem("DRAW Mode");
 
 	JMenuItem clear_ = new JMenuItem("Clear");
-	JMenuItem scrCapture_ = new JMenuItem("Notify background change");
 	JMenuItem colorSettings_ = new JMenuItem("Color Settings...");
 	JMenuItem exit_ = new JMenuItem("Exit");
 
@@ -348,7 +371,6 @@ class MKPControlMenu extends JPopupMenu {
 		add(highlightMode_);
 		add(drawMode_);
 		add(clear_);
-		add(scrCapture_);
 		add(colorSettings_);
 		add(exit_);
 
@@ -401,6 +423,8 @@ class MKPControlMenu extends JPopupMenu {
 
 				Thread.sleep(500);
 
+				MKPGlassPane.ACTIVE_SCR_CAPTURE = false;
+
 				setReadyState();
 
 			 } catch (Exception ex) {
@@ -439,16 +463,6 @@ class MKPControlMenu extends JPopupMenu {
                     }
                 });
 
-		scrCapture_.addActionListener(
-                new java.awt.event.ActionListener() {
-
-                    public void actionPerformed(ActionEvent e) {
-
-			renderer_.scrCapture();
-
-                    }
-                });
-
 		colorSettings_.addActionListener(
                 new java.awt.event.ActionListener() {
 
@@ -481,10 +495,8 @@ class MKPControlMenu extends JPopupMenu {
 			disconnect_.setEnabled(true);
 		else
 			disconnect_.setEnabled(false);
-		highlightMode_.setEnabled(false);
-		drawMode_.setEnabled(false);
+
 		clear_.setEnabled(false);
-		scrCapture_.setEnabled(false);
 		colorSettings_.setEnabled(false);
 	}
 
@@ -497,18 +509,15 @@ class MKPControlMenu extends JPopupMenu {
 		else
 			disconnect_.setEnabled(false);
 
-        	if (!RPnNetworkStatus.instance().isOnline() || 
-			(RPnNetworkStatus.instance().isOnline() && RPnNetworkStatus.instance().isMaster())) {
 
-			highlightMode_.setEnabled(true);
-			drawMode_.setEnabled(true);
+		highlightMode_.setEnabled(true);
+		drawMode_.setEnabled(true);
 
-			renderer_.parentFrame_.controlFrame_.pack();
-			renderer_.parentFrame_.controlFrame_.setVisible(true);
+		renderer_.parentFrame_.controlFrame_.pack();
+		renderer_.parentFrame_.controlFrame_.setVisible(true);
 
 			
 
-		}
 
 		clear_.setEnabled(true);
 		colorSettings_.setEnabled(true);
@@ -526,4 +535,38 @@ class MKPControlMenu extends JPopupMenu {
 		drawMode_.setEnabled(true);
 		highlightMode_.setEnabled(false);
 	}
+}
+
+
+class ScrCaptureRobot extends Thread {
+
+
+	MKPGlassPane pane_;
+
+	public ScrCaptureRobot(MKPGlassPane pane) {
+
+		pane_ = pane;
+
+	}
+
+	public void run() {
+
+
+		while (true) {
+
+		try {
+
+			if (MKPGlassPane.ACTIVE_SCR_CAPTURE)
+				pane_.scrCapture();
+
+			Thread.sleep(5000);
+
+		} catch (Exception ex) {
+
+			ex.printStackTrace();
+		}
+
+		}
+	}
+
 }

@@ -88,6 +88,7 @@ public class RPnHttpPublisher extends RPnPublisher {
                 urlCon.setDoInput(true); // to be able to read.
 
                 ObjectOutputStream out =  new ObjectOutputStream(urlCon.getOutputStream());
+
                 out.writeObject(obj);
                 out.flush();
                 //out.writeObject(new String("bla"));

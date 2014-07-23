@@ -49,8 +49,6 @@ public class DrawController implements MKPGlassUI  {
 
 		public void mousePressed(MouseEvent e){
                     
-			if ((!RPnNetworkStatus.instance().isOnline()) ||
-        		    (RPnNetworkStatus.instance().isOnline() && RPnNetworkStatus.instance().isMaster())) {
                         path_.moveTo(new Double(e.getPoint().getX()),new Double(e.getPoint().getY()));
 
                         Coords2D dcPoint = new Coords2D(new Double(e.getPoint().getX()),new Double(e.getPoint().getY()));
@@ -60,16 +58,15 @@ public class DrawController implements MKPGlassUI  {
 
                         wpath_.moveTo(wcPoint.getX(),wcPoint.getY());
 
-			}
       		}
 
       		public void mouseReleased(MouseEvent event) {
 
-        	if (RPnNetworkStatus.instance().isOnline() && RPnNetworkStatus.instance().isMaster()) {
+        	if (RPnNetworkStatus.instance().isOnline()) {
                     PathIterator it = wpath_.getPathIterator(new AffineTransform());
 
                     // TODO add coords
-        	    if (RPnNetworkStatus.instance().isOnline() && RPnNetworkStatus.instance().isMaster()) {
+        	    if (RPnNetworkStatus.instance().isOnline()) {
 
                         SerializablePathIterator wPath = new SerializablePathIterator(wpath_.getPathIterator(new AffineTransform()));
                         RPnNetworkStatus.instance().sendCommand(wPath);                       
@@ -82,8 +79,6 @@ public class DrawController implements MKPGlassUI  {
 
                 public void mouseDragged(MouseEvent e) {
 
-			if ((!RPnNetworkStatus.instance().isOnline()) ||
-        		    (RPnNetworkStatus.instance().isOnline() && RPnNetworkStatus.instance().isMaster())) {
                         path_.lineTo(new Double(e.getPoint().getX()), new Double(e.getPoint().getY()));
 
                         Coords2D dcPoint = new Coords2D(new Double(e.getPoint().getX()),new Double(e.getPoint().getY()));
@@ -94,7 +89,6 @@ public class DrawController implements MKPGlassUI  {
 
                         installedPanel_.repaint();
 
-			}
 
 		}
         };

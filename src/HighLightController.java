@@ -38,29 +38,23 @@ public class HighLightController implements MKPGlassUI {
   		@Override
   		public void mouseDragged(MouseEvent e) {
 
-			if ((!RPnNetworkStatus.instance().isOnline()) ||
-        		    (RPnNetworkStatus.instance().isOnline() && RPnNetworkStatus.instance().isMaster())) {
     			point2_ = e.getPoint();
     			installedPanel_.repaint();
 
-			}
   		}
 
   		@Override
   		public void mousePressed(MouseEvent e) {
 
-			if ((!RPnNetworkStatus.instance().isOnline()) ||
-        		    (RPnNetworkStatus.instance().isOnline() && RPnNetworkStatus.instance().isMaster())) {
      			point1_ = e.getPoint();
 
-			}
 
   		}
 
   		@Override
   		public void mouseReleased(MouseEvent e) {
 	
-        		if (RPnNetworkStatus.instance().isOnline() && RPnNetworkStatus.instance().isMaster()) {
+        		if (RPnNetworkStatus.instance().isOnline()) {
         
         			Coords2D dcPoint1 = new Coords2D(point1_.getX(),point1_.getY());
         			Coords2D wcPoint1 = new Coords2D();

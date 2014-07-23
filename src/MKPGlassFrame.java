@@ -176,9 +176,6 @@ public class MKPGlassFrame extends JFrame {
 	bckgdFrame_.bckgdPanel_.repaint();
 
 	setVisible(true);
-
-       	if (RPnNetworkStatus.instance().isOnline() && !RPnNetworkStatus.instance().isMaster())
-       		RPnHttpPoller.POLLING_MODE = RPnHttpPoller.TEXT_POLLER;
     }
 
     public void execCloseCommand() {
@@ -234,7 +231,6 @@ public class MKPGlassFrame extends JFrame {
         if (RPnNetworkStatus.instance().isOnline() && !RPnNetworkStatus.instance().isMaster()) {
 	
 		bckgdFrame_ = new MKPBackgroundFrame();
-        	RPnHttpPoller.POLLING_MODE = RPnHttpPoller.OBJ_POLLER;
 	}
     }
 

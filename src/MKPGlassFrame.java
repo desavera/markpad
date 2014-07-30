@@ -52,7 +52,6 @@ public class MKPGlassFrame extends JFrame {
 
 
 
-
     public static String DTDPATH = System.getProperty("mkphome") + System.getProperty("file.separator") + "share" + System.getProperty("file.separator") + "mkp-dtd" + System.getProperty("file.separator");
     private static MKPConfigReader configReader_;
     private static InputStream configStream_;
@@ -97,6 +96,8 @@ public class MKPGlassFrame extends JFrame {
 
 
 	controlFrame_ = new MKPControlFrame(this);
+
+	controlFrame_.setAlwaysOnTop(true);
 
 	addWindowListener(   
 	      new java.awt.event.WindowAdapter()   
@@ -164,18 +165,23 @@ public class MKPGlassFrame extends JFrame {
 
     public void execSetPadBackgroundCommand(SerializableBufferedImage bi) {
 
-	bckgdFrame_.setSize(getSize());
-	bckgdFrame_.setLocation(getLocation());
 
-	bckgdFrame_.bckgdPanel_.setBackgroundImage(bi);
+	// ONLY PUPILS SHOULD RUN THIS !!! 
+        if (RPnNetworkStatus.instance().isOnline() && !RPnNetworkStatus.instance().isMaster()) {
+		bckgdFrame_.setSize(getSize());
+		bckgdFrame_.setLocation(getLocation());
 
-	setVisible(false);
+		bckgdFrame_.bckgdPanel_.setBackgroundImage(bi);
+
+		setVisible(false);
 	
-	bckgdFrame_.setVisible(true);
-	bckgdFrame_.bckgdPanel_.invalidate();
-	bckgdFrame_.bckgdPanel_.repaint();
+		bckgdFrame_.setVisible(true);
+		bckgdFrame_.bckgdPanel_.invalidate();
+		bckgdFrame_.bckgdPanel_.repaint();
 
-	setVisible(true);
+		setVisible(true);
+
+	}
     }
 
     public void execCloseCommand() {

@@ -217,7 +217,7 @@ public class RPnSubscriber implements MessageListener,RPnMessageListener {
             /*
              * checks if CONTROL MSG or COMMAND MSG
              */
-            Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO, "Text message received !");
+            Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO, "Text message received !" + text);
             
             // CONTROL MESSAGES PARSING
             if (text.startsWith(RPnNetworkStatus.SLAVE_ACK_LOG_MSG))

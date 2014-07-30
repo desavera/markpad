@@ -151,7 +151,7 @@ public class RPnHttpObjPoller implements RPnResetableListener {
                 }
 
                 // this is for not bringing JBoss down !!!
-                //Thread.sleep((long)500);
+                Thread.sleep((long)500);
             }
 
         } catch (Exception exc) {
@@ -170,48 +170,6 @@ public class RPnHttpObjPoller implements RPnResetableListener {
         messageParser_.parseMessageObject(obj);
 
     }
-
-    public static String buildHitURL(String hitTarget) throws java.net.MalformedURLException {
-
-        if (hitTarget.startsWith(RPnNetworkStatus.RPN_COMMAND_TOPIC_NAME)) {
-
-            return RPnNetworkStatus.RPN_MEDIATORPROXY_URL + "rpncommandproxy";
-            
-        } else if (hitTarget.startsWith(RPnNetworkStatus.RPN_MASTER_ACK_TOPIC_NAME)) {
-
-            return RPnNetworkStatus.RPN_MEDIATORPROXY_URL + "rpnmasterackproxy";
-
-        } else if (hitTarget.startsWith(RPnNetworkStatus.RPN_MASTER_REQ_TOPIC_NAME)) {
-
-            return RPnNetworkStatus.RPN_MEDIATORPROXY_URL + "rpnmasterreqproxy";
-
-        } else if (hitTarget.startsWith(RPnNetworkStatus.RPN_SLAVE_ACK_TOPIC_NAME)) {
-
-            return RPnNetworkStatus.RPN_MEDIATORPROXY_URL + "rpnslaveackproxy";
-
-        } else if (hitTarget.startsWith(RPnNetworkStatus.RPN_SLAVE_REQ_QUEUE_NAME)) {
-
-            return RPnNetworkStatus.RPN_MEDIATORPROXY_URL + "rpnslavereqproxy";
-
-        } else if (hitTarget.startsWith(RPnNetworkStatus.RPN_MASTER_QUEUE_NAME)) {
-
-            return RPnNetworkStatus.RPN_MEDIATORPROXY_URL + "rpnmasterqueueproxy";
-        
-        } else throw new java.net.MalformedURLException();
-
-    }
-    
-    public static String buildHitURL(String mode,String hitTarget) throws java.net.MalformedURLException {
-
-        if (mode.startsWith("SEND"))
-            return RPnNetworkStatus.RPN_MEDIATORPROXY_URL + "rpnsendproxy";
-        else if (mode.startsWith("PUBLISH"))
-            return RPnNetworkStatus.RPN_MEDIATORPROXY_URL + "rpnpublishproxy";
-        
-        else throw new java.net.MalformedURLException();
-    }
-
-
 
     public void reset() {
 

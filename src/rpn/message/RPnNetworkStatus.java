@@ -62,20 +62,20 @@ public class RPnNetworkStatus {
     /*
      * MASTER command publishing TOPIC
      */
-    public static String  RPN_COMMAND_TOPIC_NAME = new String("jms/topic/RPN_COMMAND_TOPIC_1234");
+    public static String  RPN_COMMAND_TOPIC_NAME = new String("jms/topic/MKP_COMMAND_TOPIC_1234");
     /*
      * MASTER listening on SLAVE REQ QUEUE and publishing on SLAVE ACK
      */
-    public static String RPN_SLAVE_REQ_QUEUE_NAME = new String("jms/queue/RPN_SLAVE_REQ_QUEUE_1234");
-    public static String RPN_MASTER_REQ_TOPIC_NAME = new String("jms/topic/RPN_MASTER_REQ_TOPIC_1234");
+    public static String RPN_SLAVE_REQ_QUEUE_NAME = new String("jms/queue/MKP_SLAVE_REQ_QUEUE_1234");
+    public static String RPN_MASTER_REQ_TOPIC_NAME = new String("jms/topic/MKP_MASTER_REQ_TOPIC_1234");
     /*
      * MASTER ACKNOWLEDGE
      */
-    public static String RPN_MASTER_QUEUE_NAME = new String("jms/queue/RPN_MASTER_QUEUE_1234");
+    public static String RPN_MASTER_QUEUE_NAME = new String("jms/queue/MKP_MASTER_QUEUE_1234");
     
     
-    public static String RPN_SLAVE_ACK_TOPIC_NAME = new String("jms/topic/RPN_SLAVE_ACK_TOPIC_1234");
-    public static String RPN_MASTER_ACK_TOPIC_NAME = new String("jms/topic/RPN_MASTER_ACK_TOPIC_1234");
+    public static String RPN_SLAVE_ACK_TOPIC_NAME = new String("jms/topic/MKP_SLAVE_ACK_TOPIC_1234");
+    public static String RPN_MASTER_ACK_TOPIC_NAME = new String("jms/topic/MKP_MASTER_ACK_TOPIC_1234");
 
     /*
      * RPN CONTROL MESSAGES
@@ -119,7 +119,7 @@ public class RPnNetworkStatus {
     private RPnNetworkStatus() {
 
         isOnline_ = false;
-        isFirewalled_ = true;
+        isFirewalled_ = false;
     }
 
     //
@@ -168,8 +168,10 @@ public class RPnNetworkStatus {
 		 ackMasterRequest(clientID_);
 	}	
         
-        //isFirewalled_ = isFirewalled;
-        isFirewalled_ = true;
+        isFirewalled_ = isFirewalled;
+
+        // NO REAONS FOR THIS ...
+	//isFirewalled_ = true;
         
         // EVERYONE is notified for a MASTER change !!!
         subsMasterAck();
@@ -478,7 +480,7 @@ public class RPnNetworkStatus {
             if (commandSubscriberThread_ == null)
                 commandSubscriberThread_ = new RPnSubscriberThread(RPN_COMMAND_TOPIC_NAME);
 
-            commandSubscriberThread_.start();
+            //commandSubscriberThread_.start();
 
             /*
              * SLAVE REQ RECEIVE

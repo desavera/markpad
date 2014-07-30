@@ -25,6 +25,8 @@ import java.util.logging.Logger;
 
 import wave.multid.CoordsArray;
 
+import rpn.message.RPnNetworkStatus;
+
 public class MKPCommandModule {
 
     public static String SESSION_ID_ = "8888";
@@ -101,8 +103,8 @@ public class MKPCommandModule {
 
 		} else
 
-                if (currentCommand_.equalsIgnoreCase("BOUNDS")) {
-
+                if (currentCommand_.equalsIgnoreCase("BOUNDS") && 
+        		 (RPnNetworkStatus.instance().isOnline() && !RPnNetworkStatus.instance().isMaster())) {
                    MKPGlassFrame.instance().execSetPadBoundsCommand(mins_,maxs_);
 
 		} else

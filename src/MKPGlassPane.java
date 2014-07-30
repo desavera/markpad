@@ -19,6 +19,8 @@ public class MKPGlassPane extends JPanel {
     public static int HIGHLIGHT_MODE = 0;
     public static int DRAW_MODE = 1;
 
+    public static int MKP_SCREEN_CAPTURE_INTERVAL = 5000;
+
     public static volatile boolean ACTIVE_SCR_CAPTURE = false;
 
     Boolean doClear_;
@@ -172,11 +174,7 @@ public class MKPGlassPane extends JPanel {
 
 		setMarkMode(DRAW_MODE);
 
-		Thread.sleep(500);
-
 		RPnNetworkStatus.instance().sendCommand(backgroundImage_);
-
-		Thread.sleep(500);
 
 		setMarkMode(currentMode);
 	}
@@ -559,7 +557,7 @@ class ScrCaptureRobot extends Thread {
 			if (MKPGlassPane.ACTIVE_SCR_CAPTURE)
 				pane_.scrCapture();
 
-			Thread.sleep(5000);
+			Thread.sleep(MKPGlassPane.MKP_SCREEN_CAPTURE_INTERVAL);
 
 		} catch (Exception ex) {
 

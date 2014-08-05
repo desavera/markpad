@@ -2,6 +2,7 @@ package mkp;
 
 import java.awt.*;
 import wave.multid.Coords2D;
+import rpn.message.RPnNetworkStatus;
 
 public class MKPXMLer {
 
@@ -12,7 +13,7 @@ public class MKPXMLer {
 
                   StringBuilder buffer = new StringBuilder();
 
-                    buffer.append("<COMMAND name=\"CLOSE\">");
+                    buffer.append("<COMMAND name=\"CLOSE\" sender_id=\"" + RPnNetworkStatus.instance().clientID() + '"' + ">");
                     buffer.append("</COMMAND>");
 		 return buffer.toString();
 	}
@@ -21,7 +22,7 @@ public class MKPXMLer {
 
                   StringBuilder buffer = new StringBuilder();
 
-                    buffer.append("<COMMAND name=\"MARKMODE\" mode=\"" + mode + '"' + ">");
+                    buffer.append("<COMMAND name=\"MARKMODE\" mode=\"" + mode + '"' + " sender_id=\"" +  RPnNetworkStatus.instance().clientID() + '"' + ">");
                     buffer.append("</COMMAND>");
 		 return buffer.toString();
 
@@ -31,7 +32,7 @@ public class MKPXMLer {
 
                   StringBuilder buffer = new StringBuilder();
 
-                    buffer.append("<COMMAND name=\"CLEAR\">");
+                    buffer.append("<COMMAND name=\"CLEAR\"" + " sender_id=\"" +  RPnNetworkStatus.instance().clientID() + '"' + ">");
                     buffer.append("</COMMAND>");
 		 return buffer.toString();
 
@@ -44,7 +45,7 @@ public class MKPXMLer {
 
                   StringBuilder buffer = new StringBuilder();
 
-                    buffer.append("<COMMAND name=\"BOUNDS\">");
+                    buffer.append("<COMMAND name=\"BOUNDS\"" + " sender_id=\"" +  RPnNetworkStatus.instance().clientID() + '"' + ">");
 		    buffer.append("<COMMANDPARAM mins=\"" + minsBuffer.toString() + '"' + " maxs=\"" + maxsBuffer.toString() + '"' + "/>");
                     buffer.append("</COMMAND>");
 		 return buffer.toString();
@@ -58,7 +59,7 @@ public class MKPXMLer {
 
                   StringBuilder buffer = new StringBuilder();
 
-                    buffer.append("<COMMAND name=\"MARK\">");
+                    buffer.append("<COMMAND name=\"MARK\"" + " sender_id=\"" +  RPnNetworkStatus.instance().clientID() + '"' + ">");
 		    buffer.append("<COMMANDPARAM mins=\"" + minsBuffer.toString() + '"' + " maxs=\"" + maxsBuffer.toString() + '"' + "/>");
                     buffer.append("</COMMAND>");
 		 return buffer.toString();

@@ -35,6 +35,7 @@ public class MKPCommandModule {
 
         private String currentElement_;
         private String currentCommand_;
+        private String senderID_;
         private String modeParam_;
         private String mins_;
 	private String maxs_;
@@ -46,6 +47,7 @@ public class MKPCommandModule {
 
 	    currentElement_ = new String("NULL");
 	    currentCommand_ = new String("NULL");
+	    senderID_ = new String("NULL");
 
         }
 
@@ -69,6 +71,7 @@ public class MKPCommandModule {
             if (currentElement_.equalsIgnoreCase("COMMAND")) {
 
                 currentCommand_ = att.getValue("name");
+		senderID_ = att.getValue("sender_id");
 
 		if (currentCommand_.equalsIgnoreCase("MARKMODE"))
 			modeParam_ = att.getValue("mode");
@@ -89,7 +92,7 @@ public class MKPCommandModule {
         public void endElement(String uri, String name, String qName) throws SAXException {
 
 
-            if (name.equals("COMMAND")) {
+            if (name.equals("COMMAND") && (senderID_.compareTo(RPnNetworkStatus.instance().clientID()) != 0)) {
 
                 if (currentCommand_.equalsIgnoreCase("MARK")) {
 

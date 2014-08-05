@@ -146,10 +146,8 @@ public class RPnSubscriber implements MessageListener,RPnMessageListener {
 
             } else if (message instanceof ObjectMessage) {
 
-
                 // the NOTEBOARD case
                 parseMessageObject(((ObjectMessage)message).getObject());
-
             }
 
         } catch (Exception exc) {
@@ -275,6 +273,7 @@ public class RPnSubscriber implements MessageListener,RPnMessageListener {
                     logString = logString.concat(' ' + familyString + '\0');
                 }
 
+	
                 RPnNetworkStatus.instance().log(logString);
                 
                 // COMMAND MESSAGES PARSING

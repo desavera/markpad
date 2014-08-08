@@ -271,15 +271,16 @@ class MKPGlassPaneMouseAdapter extends MouseAdapter {
 							pane_.parentFrame_.getWidth(),
 							y_loc_onscr - pane_.parentFrame_.getHeight());
 
+			System.out.println("LOC ON SCR : " + 'x'+ x_loc_onscr + 'y' + y_loc_onscr);
+
 			pane_.clear();
 			pane_.menu_.setReadyState();
 
 			// once CONFIGURED user will need a new session for resizing...
-			pane_.parentFrame_.setResizable(false);
-			pane_.parentFrame_.invalidate();
+			//pane_.parentFrame_.setResizable(false);
+			//pane_.parentFrame_.invalidate();
 
         		if (RPnNetworkStatus.instance().isOnline() && RPnNetworkStatus.instance().isMaster()) {
-
 
 				double[] minValues = new double[2];
 				minValues[0] = pane_.parentFrame_.getLocation().x; 

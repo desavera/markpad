@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  *
  * @author mvera
  */
-public class RPnHttpPoller implements RPnResetableListener {
+public abstract class RPnHttpPoller implements RPnResetableListener {
     
 
     public static int  TEXT_POLLER = 0;
@@ -33,150 +33,19 @@ public class RPnHttpPoller implements RPnResetableListener {
         
         messageParser_ = messageParser;
         hitURL_ = hitURL.toString();
-
-        connect();
     }
 
-    public void connect() {
-
-        try {
-
-                
-
-                String fullURL = new String(hitURL_ + "?" + RPnNetworkStatus.RPN_MEDIATORPROXY_REQ_ID_TAG + '=' +
-                                             RPnNetworkStatus.RPN_MEDIATORPROXY_LISTENING_TAG + "&" +
-                                             RPnNetworkStatus.RPN_MEDIATORPROXY_CLIENT_ID_TAG + '=' + RPnNetworkStatus.instance().clientID());              
-
-                URL rpnMediatorURL = new URL(fullURL);
-
-                //System.out.println("Will now connect to RPn Mediator with URL..." + fullURL + '\n');
-                URLConnection rpnMediatorConn = rpnMediatorURL.openConnection();
-                BufferedReader buffReader = new BufferedReader(new InputStreamReader(rpnMediatorConn.getInputStream()));
-
-                String text;
-		StringBuffer fullText = new StringBuffer();
-		Boolean buffFlag = false;
-
-		while ((text = buffReader.readLine()) != null) {
-		
-		}
-                
-                
-		
-
-        } catch (Exception exc) {
-
-            exc.printStackTrace();
-
-        }
-
-
-    }
-
-    public String listeningName() {
-        return messageParser_.listeningName();
-    }
-
-    public void stopsListening() {
-        end_ = true;
-    }
-
-    public void startsListening() {
-           
-        try {
-
-            while (!end_) {
-
-                
-
-                String msgCommandURL = new String(hitURL_ + "?" + RPnNetworkStatus.RPN_MEDIATORPROXY_REQ_ID_TAG + '=' +
-                                             RPnNetworkStatus.RPN_MEDIATORPROXY_POLL_TAG + '&' +
-                                             RPnNetworkStatus.RPN_MEDIATORPROXY_CLIENT_ID_TAG + '=' + RPnNetworkStatus.instance().clientID());
-                
-
-                String objCommandURL = new String(hitURL_ + "?" + RPnNetworkStatus.RPN_MEDIATORPROXY_REQ_ID_TAG + '=' +
-                                             RPnNetworkStatus.RPN_MEDIATORPROXY_NOTEBOARD_POLL_TAG + '&' +
-                                             RPnNetworkStatus.RPN_MEDIATORPROXY_CLIENT_ID_TAG + '=' + RPnNetworkStatus.instance().clientID());
-
-                // TODO > HttpObjPoller
-                if (POLLING_MODE == TEXT_POLLER) {
-                
-                    URL rpnMediatorURL = new URL(msgCommandURL);
-
-                    URLConnection rpnMediatorConn = rpnMediatorURL.openConnection();
-
-
-		    BufferedReader buffReader = new BufferedReader(new InputStreamReader(rpnMediatorConn.getInputStream()));
-
-                    String text;
-                    StringBuffer fullText = new StringBuffer();
-                    Boolean buffFlag = false;
-
-                    while ((text = buffReader.readLine()) != null) {
-                        buffFlag = true;
-                        fullText.append(text);
-                    }
-
-                    if ((buffFlag) && (fullText.length() > 5)) {
-                        messageParser_.parseMessageText(fullText.toString());
-                    }
-                    //else
-                    //  System.out.println("no message retrieved from proxy... " + '\n');
-                } else {
-
-                    if (messageParser_.listeningName() == RPnNetworkStatus.RPN_COMMAND_TOPIC_NAME) {
-
-                        URL rpnMediatorURL = new URL(objCommandURL);
-
-
-
-                        URLConnection rpnMediatorConn = rpnMediatorURL.openConnection();
-
-                        
-                        //Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO,"Will now check command proxy objects...");
-
-                        try {
-
-                            ObjectInputStream in = new ObjectInputStream(rpnMediatorConn.getInputStream());
-                            messageParser_.parseMessageObject(in.readObject());
-
-                        } catch (java.io.EOFException ex) {
-
-                            //Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO,"No objects to be returned yet...");
-
-                        }
-
-                        
-                    }
-
-                }
-
-                // this is for not bringing JBoss down !!!
-                //Thread.sleep((long)500);
-            }
-
-        } catch (Exception exc) {
-
-            exc.printStackTrace();
-
-        } 
-    }
-
-    public void parseMessageText(String text) {
-        messageParser_.parseMessageText(text);
-    }
-
-    public void parseMessageObject(Object obj) {
-
-        messageParser_.parseMessageObject(obj);
-
-    }
+    public abstract void connect();
 
     public static String buildHitURL(String hitTarget) throws java.net.MalformedURLException {
 
-        if (hitTarget.startsWith(RPnNetworkStatus.RPN_COMMAND_TOPIC_NAME)) {
+        if (hitTarget.startsWith(RPnNetworkStatus.RPN_MASTER_COMMAND_TOPIC_NAME)) {
 
-            return RPnNetworkStatus.RPN_MEDIATORPROXY_URL + "rpncommandproxy";
+            return RPnNetworkStatus.RPN_MEDIATORPROXY_URL + "rpnmastercommandproxy";
+
+	} else if (hitTarget.startsWith(RPnNetworkStatus.RPN_PUPIL_COMMAND_TOPIC_NAME)) {
+
+            return RPnNetworkStatus.RPN_MEDIATORPROXY_URL + "rpnpupilcommandproxy";
             
         } else if (hitTarget.startsWith(RPnNetworkStatus.RPN_MASTER_ACK_TOPIC_NAME)) {
 

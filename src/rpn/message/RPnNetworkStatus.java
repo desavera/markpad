@@ -62,7 +62,8 @@ public class RPnNetworkStatus {
     /*
      * MASTER command publishing TOPIC
      */
-    public static String  RPN_COMMAND_TOPIC_NAME = new String("jms/topic/MKP_COMMAND_TOPIC_1234");
+    public static String  RPN_MASTER_COMMAND_TOPIC_NAME = new String("jms/topic/MKP_MASTER_COMMAND_TOPIC_1234");
+    public static String  RPN_PUPIL_COMMAND_TOPIC_NAME = new String("jms/topic/MKP_PUPIL_COMMAND_TOPIC_1234");
     /*
      * MASTER listening on SLAVE REQ QUEUE and publishing on SLAVE ACK
      */
@@ -471,16 +472,16 @@ public class RPnNetworkStatus {
 
 
             /*
-             * RPN COMMAND PUBLISH
+             * RPN COMMAND PUBLISH FOR MASTER
              */
             if (commandPublisher_ == null)
-                commandPublisher_ = new RPnHttpPublisher(RPN_COMMAND_TOPIC_NAME);
+                commandPublisher_ = new RPnHttpPublisher(RPN_MASTER_COMMAND_TOPIC_NAME);
 
-            // MASTER SUBS to RPN COMMAND TOPIC (specific to MKP)
+            // MASTER SUBS to PUPIL COMMAND TOPIC (specific to MKP)
             if (commandSubscriberThread_ == null)
-                commandSubscriberThread_ = new RPnSubscriberThread(RPN_COMMAND_TOPIC_NAME);
+                commandSubscriberThread_ = new RPnSubscriberThread(RPN_PUPIL_COMMAND_TOPIC_NAME);
 
-            //commandSubscriberThread_.start();
+            commandSubscriberThread_.start();
 
             /*
              * SLAVE REQ RECEIVE
@@ -525,11 +526,11 @@ public class RPnNetworkStatus {
              * RPN COMMAND PUBLISH
              */
             if (commandPublisher_ == null)
-                commandPublisher_ = new RPnHttpPublisher(RPN_COMMAND_TOPIC_NAME);
+                commandPublisher_ = new RPnHttpPublisher(RPN_PUPIL_COMMAND_TOPIC_NAME);
 
             // SLAVE SUBS to RPN COMMAND TOPIC
             if (commandSubscriberThread_ == null)
-                commandSubscriberThread_ = new RPnSubscriberThread(RPN_COMMAND_TOPIC_NAME);
+                commandSubscriberThread_ = new RPnSubscriberThread(RPN_MASTER_COMMAND_TOPIC_NAME);
 
             commandSubscriberThread_.start();
 

@@ -24,14 +24,14 @@ import rpn.message.*;
  * @author mvera
  */
 @WebListener
-public class RPnCommandProxy extends RPnMediatorProxy {
+public class RPnMasterCommandProxy extends RPnMediatorProxy {
 
 
     // COMMAND
     private static RPnProxySubscriber subscriber_ = null;
     private static RPnSubscriberThread subscriberThread_ = null;
 
-    public static String TOPIC_NAME = RPnNetworkStatus.RPN_COMMAND_TOPIC_NAME;
+    public static String TOPIC_NAME = RPnNetworkStatus.RPN_MASTER_COMMAND_TOPIC_NAME;
 
     public static HashMap subsDatalogOBJ_ = new HashMap();
     public static HashMap subsDatalogTXT_ = new HashMap();
@@ -118,8 +118,8 @@ public class RPnCommandProxy extends RPnMediatorProxy {
     @Override
     public void contextInitialized(ServletContextEvent event) {
      
-        System.out.println("Will now listen to : " + RPnNetworkStatus.RPN_COMMAND_TOPIC_NAME);
-        subscriber_ = new RPnProxySubscriber(RPnNetworkStatus.trimLocalJmsPrefix(RPnNetworkStatus.RPN_COMMAND_TOPIC_NAME),
+        System.out.println("Will now listen to : " + RPnNetworkStatus.RPN_MASTER_COMMAND_TOPIC_NAME);
+        subscriber_ = new RPnProxySubscriber(RPnNetworkStatus.trimLocalJmsPrefix(RPnNetworkStatus.RPN_MASTER_COMMAND_TOPIC_NAME),
                                             subsDatalogOBJ_,subsDatalogTXT_);
 
         if (subscriberThread_ == null) {

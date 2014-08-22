@@ -551,8 +551,6 @@ public class RPnNetworkStatus {
             slaveAckSubscriberThread_ = new RPnSubscriberThread(RPN_SLAVE_ACK_TOPIC_NAME);
 
         slaveAckSubscriberThread_.start();
-
-
         System.out.println("Will be listening to SLAVE ACK now...");
     }
 

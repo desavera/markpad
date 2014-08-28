@@ -232,7 +232,7 @@ public class MKPGlassFrame extends JFrame {
 	setLocation(new Double(minDCoords.getX()).intValue(),new Double(minDCoords.getY()).intValue());
 
 	setGlassState(MKPGlassFrame.CONFIGURED_GLASS_STATE);
-	pad_.menu_.setReadyState();
+	pad_.menu_.setPupilWaitingState();
 
         if (RPnNetworkStatus.instance().isOnline() && !RPnNetworkStatus.instance().isMaster()) {
 	

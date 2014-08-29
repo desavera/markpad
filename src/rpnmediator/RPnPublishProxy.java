@@ -37,7 +37,7 @@ public class RPnPublishProxy extends RPnMediatorProxy {
 
         String reqId = (String) request.getParameter(RPnNetworkStatus.RPN_MEDIATORPROXY_REQ_ID_TAG);
         String clientId = (String) request.getParameter(RPnNetworkStatus.RPN_MEDIATORPROXY_CLIENT_ID_TAG);
-        String topicName = (String) request.getParameter(RPnNetworkStatus.TOPIC_NAME);
+        String topicName = RPnNetworkStatus.trimLocalJmsPrefix((String) request.getParameter(RPnNetworkStatus.TOPIC_NAME));
 
         if ((reqId == null) && (clientId == null))  {
 

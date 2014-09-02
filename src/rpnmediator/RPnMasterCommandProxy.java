@@ -13,9 +13,6 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.WebListener;
 
-
-
-
 import rpn.message.*;
 
 
@@ -101,7 +98,6 @@ public class RPnMasterCommandProxy extends RPnMediatorProxy {
                 subsDatalogOBJ_.put(clientId, new Vector());
             }
         }
-
     }
 
     @Override

@@ -94,7 +94,6 @@ public class MKPGlassFrame extends JFrame {
 
 	glassState_ = INIT_GLASS_STATE;
 
-
 	controlFrame_ = new MKPControlFrame(this);
 
 	controlFrame_.setAlwaysOnTop(true);
@@ -165,7 +164,6 @@ public class MKPGlassFrame extends JFrame {
 
     public void execSetPadBackgroundCommand(SerializableBufferedImage bi) {
 
-
 	// ONLY PUPILS SHOULD RUN THIS !!! 
         if (RPnNetworkStatus.instance().isOnline() && !RPnNetworkStatus.instance().isMaster()) {
 		bckgdFrame_.setSize(getSize());
@@ -180,7 +178,6 @@ public class MKPGlassFrame extends JFrame {
 		bckgdFrame_.bckgdPanel_.repaint();
 
 		setVisible(true);
-
 	}
     }
 
@@ -234,10 +231,10 @@ public class MKPGlassFrame extends JFrame {
 	setGlassState(MKPGlassFrame.CONFIGURED_GLASS_STATE);
 	pad_.menu_.setReadyState();
 
-        if (RPnNetworkStatus.instance().isOnline() && !RPnNetworkStatus.instance().isMaster()) {
-	
+        if (RPnNetworkStatus.instance().isOnline() && 
+		!RPnNetworkStatus.instance().isMaster())
+
 		bckgdFrame_ = new MKPBackgroundFrame();
-	}
     }
 
     public static void main(final String[] args) {
@@ -251,7 +248,6 @@ public class MKPGlassFrame extends JFrame {
         if (!gd.isWindowTranslucencySupported(TRANSLUCENT)) {
             System.err.println(
                 "Translucency is not supported");
-                //System.exit(0);
 
         } else TRANSLUCENCY_SUPPORT = true;
         

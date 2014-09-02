@@ -58,7 +58,6 @@ public class MKPControlFrame extends JFrame {
 
 		glassFrame_.setVisible(true);
 		MKPGlassPane.ACTIVE_SCR_CAPTURE = false;
-
 	}
 	}); 
 
@@ -67,7 +66,6 @@ public class MKPControlFrame extends JFrame {
 
 		glassFrame_.setVisible(false);
 		MKPGlassPane.ACTIVE_SCR_CAPTURE = true;
-
 	}
 	}); 
 

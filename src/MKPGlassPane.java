@@ -145,8 +145,6 @@ public class MKPGlassPane extends JPanel {
 
 
 	Robot robot = new Robot();
-
-
 	Rectangle captureRect = new Rectangle(parentFrame_.getBounds().x,
 						parentFrame_.getBounds().y,
 						parentFrame_.getBounds().width,
@@ -155,14 +153,11 @@ public class MKPGlassPane extends JPanel {
 	backgroundImage_ = new SerializableBufferedImage(robot.createScreenCapture(captureRect));
 	ImageIO.write(backgroundImage_.getImage(), "JPG", new File("mkp.jpeg"));
        	if (RPnNetworkStatus.instance().isOnline() && RPnNetworkStatus.instance().isMaster()) {
+
 		System.out.println("INFO : sending background image over the network...");
-
 		int currentMode = currentMode_;
-
 		setMarkMode(DRAW_MODE);
-
 		RPnNetworkStatus.instance().sendCommand(backgroundImage_);
-
 		setMarkMode(currentMode);
 	}
 
@@ -398,8 +393,6 @@ class MKPControlMenu extends JPopupMenu {
 
 	            		String clientID = InetAddress.getLocalHost().getHostName();
 				RPnNetworkStatus.instance().disconnect();
-
-				Thread.sleep(500);
 
 				MKPGlassPane.ACTIVE_SCR_CAPTURE = false;
 

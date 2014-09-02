@@ -89,14 +89,12 @@ public class RPnHttpPublisher extends RPnPublisher {
 
                 ObjectOutputStream out =  new ObjectOutputStream(urlCon.getOutputStream());
 
+                // we might need a ... out.writeObject(new String("topicName"));
                 out.writeObject(obj);
                 out.flush();
-                //out.writeObject(new String("bla"));
                 out.close();
 
                 int result = urlCon.getResponseCode();
-                //ObjectInputStream in = new ObjectInputStream(urlCon.getInputStream());
-                //in.close();
 
 
         } catch (Exception exc) {

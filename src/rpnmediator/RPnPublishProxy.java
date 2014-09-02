@@ -37,9 +37,10 @@ public class RPnPublishProxy extends RPnMediatorProxy {
 
         String reqId = (String) request.getParameter(RPnNetworkStatus.RPN_MEDIATORPROXY_REQ_ID_TAG);
         String clientId = (String) request.getParameter(RPnNetworkStatus.RPN_MEDIATORPROXY_CLIENT_ID_TAG);
-        String topicName = RPnNetworkStatus.trimLocalJmsPrefix((String) request.getParameter(RPnNetworkStatus.TOPIC_NAME));
+        String topicName = (String) request.getParameter(RPnNetworkStatus.TOPIC_NAME);
 
-        if ((reqId == null) && (clientId == null))  {
+
+        if ((reqId == null) && (clientId == null) && (topicName == null))  {
 
                 System.out.println("preparing to publish the object instance... \n");
                 RPnPublisher publisher = null;
@@ -49,7 +50,11 @@ public class RPnPublishProxy extends RPnMediatorProxy {
 
                     System.out.println("Will now publish the object instance... \n");
                     Object obj = in.readObject();
-		    publisher = new RPnPublisher(RPnNetworkStatus.trimLocalJmsPrefix(topicName),true);
+
+		    // this will lead to a problema as Pupil will send OBJ msgs too...
+		    // so , what is the topicName then ???
+		    //publisher = new RPnPublisher(RPnNetworkStatus.trimLocalJmsPrefix(topicName),true);
+		    publisher = new RPnPublisher(RPnNetworkStatus.trimLocalJmsPrefix(RPnNetworkStatus.RPN_MASTER_COMMAND_TOPIC_NAME),true);
                     publisher.publish(obj);
 
                 } catch (ClassNotFoundException e) {
@@ -65,6 +70,9 @@ public class RPnPublishProxy extends RPnMediatorProxy {
 
         else if (reqId.compareTo(RPnNetworkStatus.RPN_MEDIATORPROXY_PUBLISH_TAG) == 0) {
 
+
+	    // only for binary msgs topicName is null
+            topicName = RPnNetworkStatus.trimLocalJmsPrefix(topicName);
 
             String logMsg = (String) request.getParameter(RPnNetworkStatus.RPN_MEDIATORPROXY_LOG_MSG_TAG);
 

@@ -67,7 +67,9 @@ public class HighLightController implements MKPGlassUI {
 				getViewingTransform().dcInverseTransform(dcPoint2,wcPoint2);
 
 				RPnNetworkStatus.instance().sendCommand(MKPXMLer.buildMarkXML(wcPoint1,wcPoint2));
-				installedPanel_.scrCapture();
+
+				// why ???
+				//installedPanel_.scrCapture();
 
 
 			}

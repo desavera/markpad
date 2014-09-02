@@ -59,11 +59,8 @@ public class MKPGlassPane extends JPanel {
   }
 
   public MKPGlassUI getController() {return currentController_;}
-
   public void setBackgroundImage(SerializableBufferedImage image) { backgroundImage_ = image;}
-
   public void setMarkColor(Color color) {markColor_ = color;}
-
 
   /*
    * no need to keep switching modes over the network...
@@ -99,9 +96,6 @@ public class MKPGlassPane extends JPanel {
 
 		}
 	}
-
-	//clear();
-
   }
 
  @Override
@@ -120,32 +114,25 @@ public class MKPGlassPane extends JPanel {
 
     }
 
-    else
-
-	if (parentFrame_.getGlassState() == MKPGlassFrame.INIT_GLASS_STATE) {
+    else if (parentFrame_.getGlassState() == MKPGlassFrame.INIT_GLASS_STATE) {
 
     		Graphics2D g2d = (Graphics2D) g;
-    		if(mouseAdapter_.point1_!=null && mouseAdapter_.point2_!=null){
+    		if(mouseAdapter_.point1_!=null && mouseAdapter_.point2_!=null) {
 
-       	   	g2d.setPaint(Color.RED);
-       	   	g2d.setStroke(new BasicStroke(3.0f));
+       	   		g2d.setPaint(Color.RED);
+       	   		g2d.setStroke(new BasicStroke(3.0f));
 
-       	   	g2d.drawRect(mouseAdapter_.point1_.x,
+       	   		g2d.drawRect(mouseAdapter_.point1_.x,
        	                mouseAdapter_.point1_.y,
        	                mouseAdapter_.point2_.x - mouseAdapter_.point1_.x,
        	                mouseAdapter_.point2_.y - mouseAdapter_.point1_.y);
-    	}
 
+		}
+   } else  { // already initiated ... so we have a mode !
 
-	} else  { // already initiated ... so we have a mode !
-
-		//Graphics2D g2d = (Graphics2D)g;
 		//g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.5f));
-		//g2d.setColor(getBackground());
-		//g2d.fill(getBounds());
 
 		g.setColor(markColor_);
-
 		if (currentController_ != null)
 			currentController_.paintComponent(g);
 
@@ -191,7 +178,6 @@ public class MKPGlassPane extends JPanel {
         
 	doClear_ = true;
 
-        invalidate();
         repaint();
 
         if (RPnNetworkStatus.instance().isOnline() && RPnNetworkStatus.instance().isMaster())
@@ -239,7 +225,6 @@ class MKPGlassPaneMouseAdapter extends MouseAdapter {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-	
 
 
 		PointerInfo pointerInfo = MouseInfo.getPointerInfo();
@@ -271,14 +256,6 @@ class MKPGlassPaneMouseAdapter extends MouseAdapter {
 							pane_.parentFrame_.getWidth(),
 							y_loc_onscr - pane_.parentFrame_.getHeight());
 
-			System.out.println("LOC ON SCR : " + 'x'+ x_loc_onscr + 'y' + y_loc_onscr);
-
-			pane_.clear();
-			pane_.menu_.setReadyState();
-
-			// once CONFIGURED user will need a new session for resizing...
-			//pane_.parentFrame_.setResizable(false);
-			//pane_.parentFrame_.invalidate();
 
         		if (RPnNetworkStatus.instance().isOnline() && RPnNetworkStatus.instance().isMaster()) {
 
@@ -309,6 +286,8 @@ class MKPGlassPaneMouseAdapter extends MouseAdapter {
 				} catch (Exception ex) { ex.printStackTrace();}
 
 			}
+
+			pane_.menu_.setReadyState();
 		}
 
 	}

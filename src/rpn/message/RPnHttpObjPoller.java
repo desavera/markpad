@@ -123,7 +123,8 @@ public class RPnHttpObjPoller implements RPnResetableListener {
                     //  System.out.println("no message retrieved from proxy... " + '\n');
                 } else {
 
-                    if (messageParser_.listeningName() == RPnNetworkStatus.RPN_COMMAND_TOPIC_NAME) {
+                    if ((messageParser_.listeningName() == RPnNetworkStatus.RPN_MASTER_COMMAND_TOPIC_NAME) || 
+                    (messageParser_.listeningName() == RPnNetworkStatus.RPN_PUPIL_COMMAND_TOPIC_NAME)) {
 
                         URL rpnMediatorURL = new URL(objCommandURL);
 

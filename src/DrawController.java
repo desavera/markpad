@@ -87,12 +87,11 @@ public class DrawController implements MKPGlassUI  {
 
                         wpath_.lineTo(wcPoint.getX(),wcPoint.getY());
 
-                        installedPanel_.repaint();
-
-
+			// BUG fix...
+			if (installedPanel_ != null)
+                        	installedPanel_.repaint();
 		}
         };
-
      }
 
     //
@@ -116,6 +115,7 @@ public class DrawController implements MKPGlassUI  {
 
 	panel.removeMouseListener(mouseAdapter_);
 	panel.removeMouseMotionListener(mouseAdapter_);
+
 	installedPanel_ = null;
 
     }

@@ -93,11 +93,8 @@ public class MKPGlassFrame extends JFrame {
 	//setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
 
 	glassState_ = INIT_GLASS_STATE;
-
 	controlFrame_ = new MKPControlFrame(this);
-
 	controlFrame_.setAlwaysOnTop(true);
-
 	addWindowListener(   
 	      new java.awt.event.WindowAdapter()   
      	 {  
@@ -166,10 +163,24 @@ public class MKPGlassFrame extends JFrame {
 
 	// ONLY PUPILS SHOULD RUN THIS !!! 
         if (RPnNetworkStatus.instance().isOnline() && !RPnNetworkStatus.instance().isMaster()) {
+
+		// a BUG protection...
+		if (bckgdFrame_ == null)
+			bckgdFrame_ = new MKPBackgroundFrame();
+
+
 		bckgdFrame_.setSize(getSize());
 		bckgdFrame_.setLocation(getLocation());
 
-		bckgdFrame_.bckgdPanel_.setBackgroundImage(bi);
+		try {
+
+
+			bckgdFrame_.bckgdPanel_.setBackgroundImage(bi);
+
+		} catch (Exception ex) {
+
+			ex.printStackTrace();
+		}
 
 		setVisible(false);
 	
@@ -244,7 +255,7 @@ public class MKPGlassFrame extends JFrame {
             GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice gd = ge.getDefaultScreenDevice();
 
-        //If translucent windows aren't supported, exit.
+        // If translucent windows aren't supported, exit.
         if (!gd.isWindowTranslucencySupported(TRANSLUCENT)) {
             System.err.println(
                 "Translucency is not supported");

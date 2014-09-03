@@ -39,7 +39,10 @@ public class HighLightController implements MKPGlassUI {
   		public void mouseDragged(MouseEvent e) {
 
     			point2_ = e.getPoint();
-    			installedPanel_.repaint();
+			
+			// BUG fix...
+			if (installedPanel_ != null)
+    				installedPanel_.repaint();
 
   		}
 

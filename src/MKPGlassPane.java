@@ -54,8 +54,6 @@ public class MKPGlassPane extends JPanel {
        mouseAdapter_ = new MKPGlassPaneMouseAdapter(this);
 
        menu_ = new MKPControlMenu(this);
-
-
   }
 
   public MKPGlassUI getController() {return currentController_;}
@@ -224,6 +222,7 @@ class MKPGlassPaneMouseAdapter extends MouseAdapter {
 
 		PointerInfo pointerInfo = MouseInfo.getPointerInfo();
 
+		// these are the TRUE screen location (no relative)
 		int x_loc_onscr = pointerInfo.getLocation().x;
 		int y_loc_onscr = pointerInfo.getLocation().y;
 
@@ -244,9 +243,9 @@ class MKPGlassPaneMouseAdapter extends MouseAdapter {
 			int org_y_loc = pane_.parentFrame_.getLocation().y;
 
 
+
 			pane_.parentFrame_.setSize(point2_.x - point1_.x,
 				      point2_.y - point1_.y);
-
 			pane_.parentFrame_.setLocation(x_loc_onscr - 
 							pane_.parentFrame_.getWidth(),
 							y_loc_onscr - pane_.parentFrame_.getHeight());
@@ -270,11 +269,12 @@ class MKPGlassPaneMouseAdapter extends MouseAdapter {
 
 				try { 
 
+					// a little time before sending the background image
+					Thread.sleep(2000);
+
 					// the first time should print... and then depend on the ON|OFF mechanism...
 					pane_.scrCapture();
 
-					Thread.sleep(500);
-	
 					ScrCaptureRobot scrRobot = new ScrCaptureRobot(pane_);
 					scrRobot.start();
 
@@ -466,6 +466,9 @@ class MKPControlMenu extends JPopupMenu {
 			disconnect_.setEnabled(true);
 		else
 			disconnect_.setEnabled(false);
+
+		highlightMode_.setEnabled(true);
+		drawMode_.setEnabled(true);
 
 		clear_.setEnabled(false);
 		colorSettings_.setEnabled(false);

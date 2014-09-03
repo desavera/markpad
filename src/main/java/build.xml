@@ -1,0 +1,66 @@
+
+<project name="RPN" default="all" basedir="..">
+    
+    <!-- set global properties for this build -->
+    <property environment="env"/>
+    <!-- <property name="hosttype" value="${env.RPHOSTTYPE}"/> -->
+    <!-- global properties does not work - set "environment" variables locally -->
+    <property name="hosttype" value="linux_x86_64"/>
+
+    <property name="srcdir"   location="${basedir}/src"/>
+    <property name="libdir"   location="${basedir}/lib"/>
+    <property name="docdir"   location="${basedir}/doc"/>
+    <property name="bindir"   location="${basedir}/bin"/>
+    <property name="makedir"  location="${srcdir}/make"/>
+    <property name="build"    location="${libdir}/build"/>
+    <property name="classdir" location="${build}/classes"/>
+    <property name="webdir"   location="${srcdir}/conf"/>
+    <property name="depdir"   location="${build}/depcache"/>
+
+
+    <target name="all" depends="compile-java"/>
+    
+    <target name="init">
+        <tstamp/>
+        <mkdir dir="${classdir}"/>
+        <mkdir dir="${depdir}"/>
+        <mkdir dir="${libc++dir}"/>
+        <mkdir dir="${plugindir}"/>
+    </target>
+    
+    <!-- Compile java source -->
+    <target name="compile-java" depends="init" description="Compile java source code" >
+        <depend srcdir="${srcdir}" destdir="${classdir}" cache="${depdir}" closure="yes"/>
+
+        <javac  encoding="utf8" deprecation="off" debug="true" source="1.6" target="1.6"
+                classpath="${libdir}/log4j.jar:${libdir}/javaee-api-6.0.jar:${libdir}/jbossall-client.jar:${libdir}/vecmath.jar:${libdir}/pdflibdir.jar:${libdir}/xml4j.jar:${libdir}/jlapack-0.6.jar:${classdir}:${libdir}/msv.jar:${libdir}/iso-relax.jar:${libdir}/batik-awt-util.jar:${libdir}/batik-util.jar:${libdir}/batik-dom.jar:${libdir}/batik-xml.jar:${libdir}/batik-ext.jar:${libdir}/batik-svg-dom.jar:${libdir}/batik-svggen.jar:${libdir}/vecmath.jar:${libdir}/wave.jar:${libdir}/rpn.jar"
+                srcdir="${srcdir}" sourcepath="${srcdir}" destdir="${classdir}">
+        </javac>
+        <jar destfile="${libdir}/mkp.jar" basedir="${classdir}">
+            <manifest>
+                <attribute name="Main-Class" value="mkp/MKPGlassFrame"/>
+                <attribute name="Class-path" value="./rpn.jar ./vecmath.jar ./log4j.jar ./jbossall-client.jar \
+			./pdflib.jar ./xml4j.jar ./jlapack-0.6.jar ./msv.jar ./iso-relax.jar \
+			./batik-awt-util.jar ./batik-util.jar ./batik-dom.jar ./batik-xml.jar ./batik-ext.jar ./batik-svg-dom.jar ./batik-svggen.jar "/>
+            </manifest>
+        </jar>
+	<war destfile="${libdir}/mkpmediatorproxy.war" basedir="${classdir}" webxml="${webdir}/web.xml">
+            <manifest>
+                <attribute name="Class-path" value="./rpn.jar ./wave.jar ./vecmath.jar ./log4j.jar ./jbossall-client.jar \
+			./pdflib.jar ./xml4j.jar ./jlapack-0.6.jar ./msv.jar ./iso-relax.jar \
+			./batik-awt-util.jar ./batik-util.jar ./batik-dom.jar ./batik-xml.jar ./batik-ext.jar ./batik-svg-dom.jar ./batik-svggen.jar  "/>
+            </manifest>
+	</war>	
+    </target>
+    
+    <!-- clean up java classes, jar, C++ objects and libraries -->
+    <target name="clean" depends="clean-java" description="clean up java objects"/>
+
+    <target name="clean-java" description="clean up java classes" >
+        <delete dir="${classdir}"/>
+        <delete dir="${depdir}"/>
+        <delete dir="${build}"/>
+        <delete file="${libdir}/mkp.jar"/>
+    </target>
+       
+</project>

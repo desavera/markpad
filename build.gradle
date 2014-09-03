@@ -1,0 +1,32 @@
+apply plugin: 'java'
+
+defaultTasks 'hello','release'
+
+task hello {
+
+	doLast {
+
+		println 'Hello Man !!!'
+
+	}
+}
+
+task distribution << {
+    println "We build the zip with version=$version"
+}
+
+task release(dependsOn: 'distribution') << {
+    println 'We release now'
+}
+
+gradle.taskGraph.whenReady {taskGraph ->
+    if (taskGraph.hasTask(release)) {
+        version = '0.2.0'
+    } else {
+        version = '2.0-SNAPSHOT'
+    }
+}
+
+dependencies {
+    compile files('lib/log4j.jar','lib/javaee-api-6.0.jar','lib/jbossall-client.jar','lib/vecmath.jar','lib/pdf.jar','lib/xml4j.jar','lib/jlapack-0.6.jar','lib/msv.jar','lib/iso-relax.jar','lib/batik-awt-util.jar','lib/batik-util.jar','lib/batik-dom.jar','lib/batik-xml.jar','lib/batik-ext.jar','lib/batik-svg-dom.jar','lib/batik-svggen.jar','lib/wave.jar','lib/rpn.jar')
+}

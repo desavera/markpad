@@ -168,8 +168,11 @@ public class MKPGlassFrame extends JFrame {
 		if (bckgdFrame_ == null)
 			bckgdFrame_ = new MKPBackgroundFrame();
 
+		System.out.println("IMAGE w is : " + bi.getImage().getWidth());
+		System.out.println("IMAGE h is : " + bi.getImage().getHeight());
+		bckgdFrame_.setSize(bi.getImage().getWidth(),
+				    bi.getImage().getHeight());
 
-		bckgdFrame_.setSize(getSize());
 		bckgdFrame_.setLocation(getLocation());
 
 		try {
@@ -239,7 +242,14 @@ public class MKPGlassFrame extends JFrame {
 	setSize(new Double(maxDCoords.getX() - minDCoords.getX()).intValue(),new Double(maxDCoords.getY() - minDCoords.getY()).intValue());
 	setLocation(new Double(minDCoords.getX()).intValue(),new Double(minDCoords.getY()).intValue());
 
+	System.out.println("mins : " + mins);
+	System.out.println("maxs : " + maxs);
+	System.out.println("wDC : " + new Double(maxDCoords.getX() - minDCoords.getX()).intValue());
+	System.out.println("hDC : " + new Double(maxDCoords.getY() - minDCoords.getY()).intValue());
+	System.out.println("pupil size is : " + getSize());
+
 	setGlassState(MKPGlassFrame.CONFIGURED_GLASS_STATE);
+
 	pad_.menu_.setPupilWaitingState();
 
         if (RPnNetworkStatus.instance().isOnline() && 

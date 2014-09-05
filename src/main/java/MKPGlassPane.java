@@ -70,29 +70,22 @@ public class MKPGlassPane extends JPanel {
 
 	if (mode == HIGHLIGHT_MODE) {
 
-       		highLightController_.install(this);
-       		drawController_.uninstall(this);
 		currentController_ = highLightController_;
 
-		menu_.setHighlightState();
+       		highLightController_.install(this);
+       		drawController_.uninstall(this);
 
-        	if (RPnNetworkStatus.instance().isOnline() && !RPnNetworkStatus.instance().isMaster()) {
-			menu_.setPupilWaitingState();
-		}
+		menu_.setHighlightState();
 	}
 
 	if (mode == DRAW_MODE) {
 
-       		highLightController_.uninstall(this);
-       		drawController_.install(this);
 		currentController_ = drawController_;
 
+       		highLightController_.uninstall(this);
+       		drawController_.install(this);
+
 		menu_.setDrawState();
-
-        	if (RPnNetworkStatus.instance().isOnline() && !RPnNetworkStatus.instance().isMaster()) {
-			menu_.setPupilWaitingState();
-
-		}
 	}
   }
 
@@ -153,10 +146,7 @@ public class MKPGlassPane extends JPanel {
        	if (RPnNetworkStatus.instance().isOnline() && RPnNetworkStatus.instance().isMaster()) {
 
 		System.out.println("INFO : sending background image over the network...");
-		int currentMode = currentMode_;
-		setMarkMode(DRAW_MODE);
 		RPnNetworkStatus.instance().sendCommand(backgroundImage_);
-		setMarkMode(currentMode);
 	}
 
      } catch (Exception ex) {
@@ -242,29 +232,31 @@ class MKPGlassPaneMouseAdapter extends MouseAdapter {
 			int org_x_loc = pane_.parentFrame_.getLocation().x;
 			int org_y_loc = pane_.parentFrame_.getLocation().y;
 
+			int w = point2_.x - point1_.x;
+			int h = point2_.y - point1_.y;
 
+			int loc_x = x_loc_onscr - w;
+			int loc_y = y_loc_onscr - h;
 
-			pane_.parentFrame_.setSize(point2_.x - point1_.x,
-				      point2_.y - point1_.y);
-			pane_.parentFrame_.setLocation(x_loc_onscr - 
-							pane_.parentFrame_.getWidth(),
-							y_loc_onscr - pane_.parentFrame_.getHeight());
+			pane_.parentFrame_.setSize(w,h);
+			pane_.parentFrame_.setLocation(loc_x,loc_y);
 
 
         		if (RPnNetworkStatus.instance().isOnline() && RPnNetworkStatus.instance().isMaster()) {
 
 				double[] minValues = new double[2];
-				minValues[0] = pane_.parentFrame_.getLocation().x; 
-				minValues[1] = pane_.parentFrame_.getLocation().y; 
+				minValues[0] = loc_x; 
+				minValues[1] = loc_y;
 				double[] maxValues = new double[2];
-				maxValues[0] = pane_.parentFrame_.getBounds().width + minValues[0];
-				maxValues[1] = pane_.parentFrame_.getBounds().height + minValues[1];
+				maxValues[0] = w + minValues[0];
+				maxValues[1] = h + minValues[1];
 
 				Coords2D minCoords = new Coords2D();
 				Coords2D maxCoords = new Coords2D();
        				pane_.parentFrame_.viewingTransform().dcInverseTransform(new Coords2D(minValues),minCoords);
        				pane_.parentFrame_.viewingTransform().dcInverseTransform(new Coords2D(maxValues),maxCoords);
 
+				// resize all pupils frames...
 				RPnNetworkStatus.instance().sendCommand(MKPXMLer.buildBoundsXML(minCoords,maxCoords));
 
 				try { 
@@ -288,22 +280,15 @@ class MKPGlassPaneMouseAdapter extends MouseAdapter {
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {
-
-	}
+	public void mouseEntered(MouseEvent e) { }
 
 	@Override
-	public void mouseExited(MouseEvent e) {
-
-	}
+	public void mouseExited(MouseEvent e) { }
 
 	@Override
-	public void mouseMoved(MouseEvent e) {
-
-	}
+	public void mouseMoved(MouseEvent e) { }
 
 }
-
 
 class MKPControlMenu extends JPopupMenu {
 
@@ -327,7 +312,6 @@ class MKPControlMenu extends JPopupMenu {
 
 
 		renderer_ = renderer;
-
 
 		disconnect_.setEnabled(false);
 		highlightMode_.setEnabled(false);
@@ -354,7 +338,6 @@ class MKPControlMenu extends JPopupMenu {
                     public void actionPerformed(ActionEvent e) {
 
 			try {
-
             			String clientID = InetAddress.getLocalHost().getHostName();
 				RPnNetworkStatus.instance().connect(clientID,true,true);
 
@@ -372,7 +355,6 @@ class MKPControlMenu extends JPopupMenu {
                     public void actionPerformed(ActionEvent e) {
 
 			try {
-
             			String clientID = InetAddress.getLocalHost().getHostName();
 				RPnNetworkStatus.instance().connect(clientID,false,true);
 
@@ -390,7 +372,6 @@ class MKPControlMenu extends JPopupMenu {
                     public void actionPerformed(ActionEvent e) {
 
 			try {
-
 	            		String clientID = InetAddress.getLocalHost().getHostName();
 				RPnNetworkStatus.instance().disconnect();
 
@@ -420,7 +401,6 @@ class MKPControlMenu extends JPopupMenu {
                     public void actionPerformed(ActionEvent e) {
 
 				renderer_.setMarkMode(MKPGlassPane.DRAW_MODE);
-
                     }
                 });
 
@@ -430,7 +410,6 @@ class MKPControlMenu extends JPopupMenu {
                     public void actionPerformed(ActionEvent e) {
 
 			renderer_.clear();
-
                     }
                 });
 
@@ -441,7 +420,6 @@ class MKPControlMenu extends JPopupMenu {
 
 			Color color = JColorChooser.showDialog(renderer_.parentFrame_,"Pick a Color",Color.GREEN);
 			renderer_.setMarkColor(color);
-
                     }
                 });
 
@@ -452,7 +430,6 @@ class MKPControlMenu extends JPopupMenu {
                     public void actionPerformed(ActionEvent e) {
 
 			renderer_.parentFrame_.execCloseCommand();
-
                     }
                 });
 
@@ -472,6 +449,8 @@ class MKPControlMenu extends JPopupMenu {
 
 		clear_.setEnabled(false);
 		colorSettings_.setEnabled(false);
+
+		renderer_.setMarkMode(MKPGlassPane.HIGHLIGHT_MODE);
 	}
 
 	public void setReadyState() {
@@ -490,12 +469,10 @@ class MKPControlMenu extends JPopupMenu {
 		renderer_.parentFrame_.controlFrame_.pack();
 		renderer_.parentFrame_.controlFrame_.setVisible(true);
 
-			
-
-
 		clear_.setEnabled(true);
 		colorSettings_.setEnabled(true);
 
+		renderer_.setMarkMode(MKPGlassPane.HIGHLIGHT_MODE);
 	}
 
 	public void setDrawState() {

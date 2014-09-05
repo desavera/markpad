@@ -75,8 +75,7 @@ public class RPnNetworkStatus {
     public static String RPN_MASTER_QUEUE_NAME = new String("jms/queue/MKP_MASTER_QUEUE_1234");
     
     
-    //public static String RPN_SLAVE_ACK_TOPIC_NAME = new String("jms/topic/MKP_SLAVE_ACK_TOPIC_1234");
-    public static String RPN_SLAVE_ACK_TOPIC_NAME = new String("jms/topic/MKP_COMMAND_TOPIC_1234");
+    public static String RPN_SLAVE_ACK_TOPIC_NAME = new String("jms/topic/MKP_SLAVE_ACK_TOPIC_1234");
     public static String RPN_MASTER_ACK_TOPIC_NAME = new String("jms/topic/MKP_MASTER_ACK_TOPIC_1234");
 
     /*

@@ -1,5 +1,5 @@
 
-<project name="RPN" default="all" basedir="..">
+<project name="RPN" default="all" basedir="../../..">
     
     <!-- set global properties for this build -->
     <property environment="env"/>
@@ -7,7 +7,7 @@
     <!-- global properties does not work - set "environment" variables locally -->
     <property name="hosttype" value="linux_x86_64"/>
 
-    <property name="srcdir"   location="${basedir}/src"/>
+    <property name="srcdir"   location="${basedir}/src/main/java"/>
     <property name="libdir"   location="${basedir}/lib"/>
     <property name="docdir"   location="${basedir}/doc"/>
     <property name="bindir"   location="${basedir}/bin"/>

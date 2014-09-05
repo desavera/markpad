@@ -38,7 +38,6 @@ import org.xml.sax.SAXParseException;
  */
 public class MKPBackgroundFrame extends JFrame {
 
-
     MKPBackgroundPanel bckgdPanel_ = new MKPBackgroundPanel();
 
     public MKPBackgroundFrame() {    

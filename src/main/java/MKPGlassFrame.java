@@ -82,19 +82,17 @@ public class MKPGlassFrame extends JFrame {
 
         // Set the window to 55% opaque (45% translucent).
 	if (TRANSLUCENCY_SUPPORT) setOpacity(INIT_GLASS_OPACITY);
-	//setBackground(new Color(0, 255, 0, 0));
-
-	// No control to platform at all...
-	//setLocationByPlatform(false);
 
         // Display the window.
         setVisible(true);
 
-	//setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
-
 	glassState_ = INIT_GLASS_STATE;
 	controlFrame_ = new MKPControlFrame(this);
 	controlFrame_.setAlwaysOnTop(true);
+
+	controlFrame_.pack();
+	controlFrame_.setVisible(true);
+
 	addWindowListener(   
 	      new java.awt.event.WindowAdapter()   
      	 {  
@@ -213,14 +211,18 @@ public class MKPGlassFrame extends JFrame {
 	double[] p1 = new RealVector(mins).toDouble();
 	double[] p2 = new RealVector(maxs).toDouble();
 
-	pad_.setMarkMode(MKPGlassPane.HIGHLIGHT_MODE);
 	pad_.highLightController_.mark(p1,p2);
+
+	pad_.invalidate();
+	pad_.repaint();
     }
 
     public void execDrawCommand(SerializablePathIterator it) {
 
-	pad_.setMarkMode(MKPGlassPane.DRAW_MODE);
 	pad_.drawController_.updatePath(it);
+
+	pad_.invalidate();
+	pad_.repaint();
     }
 
     public void execChangeMarkModeCommand(int mode) {
@@ -242,18 +244,12 @@ public class MKPGlassFrame extends JFrame {
 	setSize(new Double(maxDCoords.getX() - minDCoords.getX()).intValue(),new Double(maxDCoords.getY() - minDCoords.getY()).intValue());
 	setLocation(new Double(minDCoords.getX()).intValue(),new Double(minDCoords.getY()).intValue());
 
-	System.out.println("mins : " + mins);
-	System.out.println("maxs : " + maxs);
-	System.out.println("wDC : " + new Double(maxDCoords.getX() - minDCoords.getX()).intValue());
-	System.out.println("hDC : " + new Double(maxDCoords.getY() - minDCoords.getY()).intValue());
-	System.out.println("pupil size is : " + getSize());
-
 	setGlassState(MKPGlassFrame.CONFIGURED_GLASS_STATE);
 
 	pad_.menu_.setPupilWaitingState();
 
         if (RPnNetworkStatus.instance().isOnline() && 
-		!RPnNetworkStatus.instance().isMaster())
+	!RPnNetworkStatus.instance().isMaster())
 
 		bckgdFrame_ = new MKPBackgroundFrame();
     }

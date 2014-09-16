@@ -177,6 +177,10 @@ public class RPnSubscriber implements MessageListener,RPnMessageListener {
 
 
             try {
+        
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO, "This is a PATH obj... !");
+
+		if (obj == null) System.out.println("and it is null...");
                
             	SerializablePathIterator it = (SerializablePathIterator) obj;
                 MKPGlassFrame.instance().execDrawCommand(it);
@@ -194,6 +198,8 @@ public class RPnSubscriber implements MessageListener,RPnMessageListener {
 	else {
 
             try {
+
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO, "This is an IMAGE obj... !");
 
             	SerializableBufferedImage bi = (SerializableBufferedImage) obj;
                 MKPGlassFrame.instance().execSetPadBackgroundCommand(bi);

@@ -60,9 +60,7 @@ public class RPnPublisher {
             connection.start();
 
         } catch (Exception exc) {
-
             exc.printStackTrace();
-
         } 
     }
 

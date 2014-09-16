@@ -38,10 +38,12 @@ public class RPnProxySubscriber extends RPnSubscriber {
             System.out.println("Map for subs has entries...");
             Map.Entry entry = (Map.Entry) it.next();
             Vector data = (Vector) entry.getValue();
-            data.add(text);
+	    
+	    if (text == null) 
+		System.out.println("but the text inside is null...");	
 
-
-
+	    else
+            	data.add(text);
         }
     }
 
@@ -56,8 +58,12 @@ public class RPnProxySubscriber extends RPnSubscriber {
             System.out.println("Map for subs has entries...");
             Map.Entry entry = (Map.Entry) it.next();
             Vector data = (Vector) entry.getValue();
-            data.add(obj);
-        }
 
+	    if (obj == null) 
+		System.out.println("but the obj inside is null...");	
+
+	    else
+            	data.add(obj);
+        }
     }
 }

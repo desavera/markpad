@@ -34,8 +34,9 @@ public class DrawController implements MKPGlassUI  {
     private MouseAdapter mouseAdapter_;
     private MKPGlassPane installedPanel_;
 
+    private boolean active_ = false;
   
-    public DrawController(ViewingTransform vTransform) {
+    public DrawController(MKPGlassPane panel,ViewingTransform vTransform) {
 
        
         path_ = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
@@ -43,12 +44,13 @@ public class DrawController implements MKPGlassUI  {
 
 	vTransform_ = vTransform;
 
-	installedPanel_ = null;
+	installedPanel_ = panel;
 
      	mouseAdapter_ = new MouseAdapter() {
 
 		public void mousePressed(MouseEvent e){
                     
+		    if (active_) {
                         path_.moveTo(new Double(e.getPoint().getX()),new Double(e.getPoint().getY()));
 
                         Coords2D dcPoint = new Coords2D(new Double(e.getPoint().getX()),new Double(e.getPoint().getY()));
@@ -57,27 +59,33 @@ public class DrawController implements MKPGlassUI  {
                         getViewingTransform().dcInverseTransform(dcPoint,wcPoint);
 
                         wpath_.moveTo(wcPoint.getX(),wcPoint.getY());
-
+		   }
       		}
 
       		public void mouseReleased(MouseEvent event) {
 
-        	if (RPnNetworkStatus.instance().isOnline()) {
-                    PathIterator it = wpath_.getPathIterator(new AffineTransform());
+	       	    if (active_ && 
+			!SwingUtilities.isRightMouseButton(event) && 
+			RPnNetworkStatus.instance().isOnline()) {
 
-                    // TODO add coords
-        	    if (RPnNetworkStatus.instance().isOnline()) {
+                    	PathIterator it = wpath_.getPathIterator(new AffineTransform());
 
-                        SerializablePathIterator wPath = new SerializablePathIterator(wpath_.getPathIterator(new AffineTransform()));
-                        RPnNetworkStatus.instance().sendCommand(wPath);                       
+                    	// TODO add coords
+        	    	if (RPnNetworkStatus.instance().isOnline()) {
 
-                    }
-		}
+                       	 SerializablePathIterator wPath = new SerializablePathIterator(wpath_.getPathIterator(new AffineTransform()));
+                       	 RPnNetworkStatus.instance().sendCommand(wPath);                       
 
+			 wpath_.reset();
+			 path_.reset();
+
+                    	}
+		    }
                 }
 
-
                 public void mouseDragged(MouseEvent e) {
+
+		    if (active_) {
 
                         path_.lineTo(new Double(e.getPoint().getX()), new Double(e.getPoint().getY()));
 
@@ -87,9 +95,8 @@ public class DrawController implements MKPGlassUI  {
 
                         wpath_.lineTo(wcPoint.getX(),wcPoint.getY());
 
-			// BUG fix...
-			if (installedPanel_ != null)
-                        	installedPanel_.repaint();
+    			installedPanel_.repaint();
+		   }
 		}
         };
      }
@@ -107,7 +114,11 @@ public class DrawController implements MKPGlassUI  {
 
 	panel.addMouseListener(mouseAdapter_);
 	panel.addMouseMotionListener(mouseAdapter_);
+
+	// just one single panel for now...
 	installedPanel_ = (MKPGlassPane)panel;
+
+	active_ = true;
 
     }
 
@@ -116,7 +127,7 @@ public class DrawController implements MKPGlassUI  {
 	panel.removeMouseListener(mouseAdapter_);
 	panel.removeMouseMotionListener(mouseAdapter_);
 
-	installedPanel_ = null;
+	active_ = false;
 
     }
 
@@ -136,6 +147,7 @@ public class DrawController implements MKPGlassUI  {
 
             // this is the famous WC to DC transform...
             while (!it.isDone()) {
+
 
                 int domainDim = vTransform_.coordSysTransform().getDomain().getDim();
                 double[] wc_coords = new double[domainDim];

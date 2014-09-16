@@ -23,14 +23,15 @@ public class HighLightController implements MKPGlassUI {
     private ViewingTransform vTransform_;
     private MKPGlassPane installedPanel_;
 
+    private boolean active_ = false;
 
-    public HighLightController(ViewingTransform vTransform) {
+    public HighLightController(MKPGlassPane panel,ViewingTransform vTransform) {
 
        doClear_ = false;
        point1_ = new Point();
        point2_ = new Point();
 
-       installedPanel_ = null;
+       installedPanel_ = panel;
        vTransform_ = vTransform;
   
        mouseAdapter_ = new MouseAdapter() {
@@ -38,17 +39,17 @@ public class HighLightController implements MKPGlassUI {
   		@Override
   		public void mouseDragged(MouseEvent e) {
 
+		    if (active_) {
     			point2_ = e.getPoint();
-			
-			// BUG fix...
-			if (installedPanel_ != null)
-    				installedPanel_.repaint();
+    			installedPanel_.repaint();
+		    } 	
 
   		}
 
   		@Override
   		public void mousePressed(MouseEvent e) {
 
+		    if (active_)
      			point1_ = e.getPoint();
 
 
@@ -57,7 +58,9 @@ public class HighLightController implements MKPGlassUI {
   		@Override
   		public void mouseReleased(MouseEvent e) {
 	
-        		if (RPnNetworkStatus.instance().isOnline()) {
+			if (active_ &&
+			!SwingUtilities.isRightMouseButton(e) && 
+				RPnNetworkStatus.instance().isOnline()) {
         
         			Coords2D dcPoint1 = new Coords2D(point1_.getX(),point1_.getY());
         			Coords2D wcPoint1 = new Coords2D();
@@ -70,14 +73,8 @@ public class HighLightController implements MKPGlassUI {
 				getViewingTransform().dcInverseTransform(dcPoint2,wcPoint2);
 
 				RPnNetworkStatus.instance().sendCommand(MKPXMLer.buildMarkXML(wcPoint1,wcPoint2));
-
-				// why ???
-				//installedPanel_.scrCapture();
-
-
 			}
  		}
-
  	};
     }
 
@@ -110,8 +107,10 @@ public class HighLightController implements MKPGlassUI {
 	panel.addMouseListener(mouseAdapter_);
 	panel.addMouseMotionListener(mouseAdapter_);
 
+	// just one single panel for now...
 	installedPanel_ = (MKPGlassPane)panel;
 
+	active_ = true;
     }
 
     public void uninstall(JPanel panel) {
@@ -119,7 +118,7 @@ public class HighLightController implements MKPGlassUI {
 	panel.removeMouseListener(mouseAdapter_);
 	panel.removeMouseMotionListener(mouseAdapter_);
 
-	installedPanel_ = null;
+	active_ = false;
 
     }
 

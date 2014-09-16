@@ -88,40 +88,11 @@ public class RPnHttpObjPoller implements RPnResetableListener {
 
                 
 
-                String msgCommandURL = new String(hitURL_ + "?" + RPnNetworkStatus.RPN_MEDIATORPROXY_REQ_ID_TAG + '=' +
-                                             RPnNetworkStatus.RPN_MEDIATORPROXY_POLL_TAG + '&' +
-                                             RPnNetworkStatus.RPN_MEDIATORPROXY_CLIENT_ID_TAG + '=' + RPnNetworkStatus.instance().clientID());
-                
-
                 String objCommandURL = new String(hitURL_ + "?" + RPnNetworkStatus.RPN_MEDIATORPROXY_REQ_ID_TAG + '=' +
                                              RPnNetworkStatus.RPN_MEDIATORPROXY_NOTEBOARD_POLL_TAG + '&' +
                                              RPnNetworkStatus.RPN_MEDIATORPROXY_CLIENT_ID_TAG + '=' + RPnNetworkStatus.instance().clientID());
 
-                // TODO > HttpObjPoller
-                if (POLLING_MODE == TEXT_POLLER) {
                 
-                    URL rpnMediatorURL = new URL(msgCommandURL);
-
-                    URLConnection rpnMediatorConn = rpnMediatorURL.openConnection();
-
-
-		    BufferedReader buffReader = new BufferedReader(new InputStreamReader(rpnMediatorConn.getInputStream()));
-
-                    String text;
-                    StringBuffer fullText = new StringBuffer();
-                    Boolean buffFlag = false;
-
-                    while ((text = buffReader.readLine()) != null) {
-                        buffFlag = true;
-                        fullText.append(text);
-                    }
-
-                    if ((buffFlag) && (fullText.length() > 5)) {
-                        messageParser_.parseMessageText(fullText.toString());
-                    }
-                    //else
-                    //  System.out.println("no message retrieved from proxy... " + '\n');
-                } else {
 
                     if ((messageParser_.listeningName() == RPnNetworkStatus.RPN_MASTER_COMMAND_TOPIC_NAME) || 
                     (messageParser_.listeningName() == RPnNetworkStatus.RPN_PUPIL_COMMAND_TOPIC_NAME)) {
@@ -148,8 +119,6 @@ public class RPnHttpObjPoller implements RPnResetableListener {
 
                         
                     }
-
-                }
 
                 // this is for not bringing JBoss down !!!
                 Thread.sleep((long)500);

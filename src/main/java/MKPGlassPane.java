@@ -42,8 +42,10 @@ public class MKPGlassPane extends JPanel {
 
        super();
 
-       drawController_ = new DrawController(parentFrame.viewingTransform());
-       highLightController_ = new HighLightController(parentFrame.viewingTransform());
+       drawController_ = new DrawController(this,parentFrame.viewingTransform());
+       highLightController_ = new HighLightController(this,parentFrame.viewingTransform());
+
+       currentController_ = highLightController_;
 
        doClear_ = false;
        parentFrame_ = parentFrame;
@@ -53,7 +55,8 @@ public class MKPGlassPane extends JPanel {
 
        mouseAdapter_ = new MKPGlassPaneMouseAdapter(this);
 
-       menu_ = new MKPControlMenu(this);
+	// no menu for now...
+       //menu_ = new MKPControlMenu(this);
   }
 
   public MKPGlassUI getController() {return currentController_;}
@@ -64,30 +67,28 @@ public class MKPGlassPane extends JPanel {
    * no need to keep switching modes over the network...
    * as we take the uniform OBJMSG approach there will be no difference anymore.
    */
-  public void setMarkMode(int mode) {
+  public synchronized void setMarkMode(int mode) {
 
 	currentMode_ = mode;
+
+	currentController_.uninstall(this);
 
 	if (mode == HIGHLIGHT_MODE) {
 
 		currentController_ = highLightController_;
-
-       		highLightController_.install(this);
-       		drawController_.uninstall(this);
-
-		menu_.setHighlightState();
+		//menu_.setHighlightState();
 	}
 
 	if (mode == DRAW_MODE) {
 
 		currentController_ = drawController_;
-
-       		highLightController_.uninstall(this);
-       		drawController_.install(this);
-
-		menu_.setDrawState();
+		//menu_.setDrawState();
 	}
+
+	currentController_.install(this);
   }
+
+  public int getMarkMode() {return currentMode_;}
 
  @Override
   public void paintComponent(Graphics g){
@@ -117,16 +118,17 @@ public class MKPGlassPane extends JPanel {
        	                mouseAdapter_.point1_.y,
        	                mouseAdapter_.point2_.x - mouseAdapter_.point1_.x,
        	                mouseAdapter_.point2_.y - mouseAdapter_.point1_.y);
-
 		}
+
    } else  { // already initiated ... so we have a mode !
 
 		//g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.5f));
-
 		g.setColor(markColor_);
-		if (currentController_ != null)
-			currentController_.paintComponent(g);
+		//if (currentController_ != null)
+		//	currentController_.paintComponent(g);
 
+		drawController_.paintComponent(g);
+		highLightController_.paintComponent(g);
 	}
   }
 
@@ -209,7 +211,6 @@ class MKPGlassPaneMouseAdapter extends MouseAdapter {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 
-
 		PointerInfo pointerInfo = MouseInfo.getPointerInfo();
 
 		// these are the TRUE screen location (no relative)
@@ -218,15 +219,14 @@ class MKPGlassPaneMouseAdapter extends MouseAdapter {
 
     		point2_ = e.getPoint();
 
-		if (SwingUtilities.isRightMouseButton(e)) {
+		/*if (SwingUtilities.isRightMouseButton(e)) {
 
         		pane_.menu_.show(e.getComponent(), e.getX(), e.getY());
 
-		} else 
+		} else */
 
 		if (pane_.parentFrame_.getGlassState() == MKPGlassFrame.INIT_GLASS_STATE) {
 
-	
 			pane_.parentFrame_.setGlassState(MKPGlassFrame.CONFIGURED_GLASS_STATE);
 
 			int org_x_loc = pane_.parentFrame_.getLocation().x;
@@ -240,7 +240,6 @@ class MKPGlassPaneMouseAdapter extends MouseAdapter {
 
 			pane_.parentFrame_.setSize(w,h);
 			pane_.parentFrame_.setLocation(loc_x,loc_y);
-
 
         		if (RPnNetworkStatus.instance().isOnline() && RPnNetworkStatus.instance().isMaster()) {
 
@@ -274,7 +273,7 @@ class MKPGlassPaneMouseAdapter extends MouseAdapter {
 
 			}
 
-			pane_.menu_.setReadyState();
+			//pane_.menu_.setReadyState();
 		}
 
 	}
@@ -466,8 +465,8 @@ class MKPControlMenu extends JPopupMenu {
 		highlightMode_.setEnabled(true);
 		drawMode_.setEnabled(true);
 
-		renderer_.parentFrame_.controlFrame_.pack();
-		renderer_.parentFrame_.controlFrame_.setVisible(true);
+		//renderer_.parentFrame_.controlFrame_.pack();
+		//renderer_.parentFrame_.controlFrame_.setVisible(true);
 
 		clear_.setEnabled(true);
 		colorSettings_.setEnabled(true);

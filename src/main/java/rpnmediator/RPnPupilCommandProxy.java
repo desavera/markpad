@@ -68,7 +68,7 @@ public class RPnPupilCommandProxy extends RPnMediatorProxy {
                             String command = (String) removed;
 
                             // for DEBUGING
-                            System.out.println("Message being retrieved by RPnCommandProxy : " + '\n' + command);
+                            System.out.println("Message being retrieved by RPnPupilCommandProxy : " + '\n' + command);
                             writer.println(command);
 
                         } 
@@ -86,7 +86,7 @@ public class RPnPupilCommandProxy extends RPnMediatorProxy {
 
                 ObjectOutputStream out = new ObjectOutputStream(response.getOutputStream());
 
-                System.out.println("Object being retrieved by RPnCommandProxy : " + '\n');
+                System.out.println("Object being retrieved by RPnPupilCommandProxy : " + '\n');
                 out.writeObject(removed);
             }
            

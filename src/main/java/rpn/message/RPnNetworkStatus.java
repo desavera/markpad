@@ -16,7 +16,6 @@ import mkp.MKPCommandModule;
  *
  *
  * <p>The class that stores and manages the network communications parameters </p>
-
  */
 public class RPnNetworkStatus {
 
@@ -453,7 +452,6 @@ public class RPnNetworkStatus {
 
         if (clientID.compareTo(clientID_) == 0) {
 
-
             // TODO : this should be a reconnect !
             if (isOnline() && !NO_BUS_CONTROL_) {
 
@@ -464,12 +462,10 @@ public class RPnNetworkStatus {
 
             }
 
-
             // and now BECOMES MASTER
             log("You are now being configured as MASTER for SESSION with ID : " + MKPCommandModule.SESSION_ID_ + '\n');
 
             RPnNetworkDialog.instance().setTitle(RPnNetworkDialog.TITLE + "MASTER");
-
 
             /*
              * RPN COMMAND PUBLISH FOR MASTER
@@ -580,16 +576,13 @@ public class RPnNetworkStatus {
         
         Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO, "Command successfully published was : " + commandDesc);
         log ("COMMAND EXECUTED : = " + extractCommandName(commandDesc));
-        
     }
 
     public void sendCommand(Object obj) {
 
-
         commandPublisher_.publish(obj);
 
         Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO, "Object successfully published ! ");
-        
     }
 
     public static RPnNetworkStatus instance() {

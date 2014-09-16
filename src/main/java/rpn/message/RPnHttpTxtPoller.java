@@ -92,13 +92,6 @@ public class RPnHttpTxtPoller implements RPnResetableListener {
                                              RPnNetworkStatus.RPN_MEDIATORPROXY_POLL_TAG + '&' +
                                              RPnNetworkStatus.RPN_MEDIATORPROXY_CLIENT_ID_TAG + '=' + RPnNetworkStatus.instance().clientID());
                 
-
-                String objCommandURL = new String(hitURL_ + "?" + RPnNetworkStatus.RPN_MEDIATORPROXY_REQ_ID_TAG + '=' +
-                                             RPnNetworkStatus.RPN_MEDIATORPROXY_NOTEBOARD_POLL_TAG + '&' +
-                                             RPnNetworkStatus.RPN_MEDIATORPROXY_CLIENT_ID_TAG + '=' + RPnNetworkStatus.instance().clientID());
-
-                // TODO > HttpObjPoller
-                if (POLLING_MODE == TEXT_POLLER) {
                 
                     URL rpnMediatorURL = new URL(msgCommandURL);
 
@@ -119,37 +112,6 @@ public class RPnHttpTxtPoller implements RPnResetableListener {
                     if ((buffFlag) && (fullText.length() > 5)) {
                         messageParser_.parseMessageText(fullText.toString());
                     }
-                    //else
-                    //  System.out.println("no message retrieved from proxy... " + '\n');
-                } else {
-
-                    if ((messageParser_.listeningName() == RPnNetworkStatus.RPN_MASTER_COMMAND_TOPIC_NAME) || 
-                     (messageParser_.listeningName() == RPnNetworkStatus.RPN_PUPIL_COMMAND_TOPIC_NAME)) {
-
-                        URL rpnMediatorURL = new URL(objCommandURL);
-
-
-
-                        URLConnection rpnMediatorConn = rpnMediatorURL.openConnection();
-
-                        
-                        //Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO,"Will now check command proxy objects...");
-
-                        try {
-
-                            ObjectInputStream in = new ObjectInputStream(rpnMediatorConn.getInputStream());
-                            messageParser_.parseMessageObject(in.readObject());
-
-                        } catch (java.io.EOFException ex) {
-
-                            //Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO,"No objects to be returned yet...");
-
-                        }
-
-                        
-                    }
-
-                }
 
                 // this is for not bringing JBoss down !!!
                 Thread.sleep((long)500);

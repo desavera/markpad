@@ -31,20 +31,15 @@ public class RPnHttpPublisher extends RPnPublisher {
     public void publish(String msg) {
 
         try {              
-                
                 String fullURL = new String(hitURL_ + "?" + RPnNetworkStatus.RPN_MEDIATORPROXY_REQ_ID_TAG + '='
                                                         + RPnNetworkStatus.RPN_MEDIATORPROXY_PUBLISH_TAG
                                                         + '&' + RPnNetworkStatus.TOPIC_NAME + '=' + topicName_
                                                         + '&' + RPnNetworkStatus.RPN_MEDIATORPROXY_CLIENT_ID_TAG + '=' + RPnNetworkStatus.instance().clientID()
                                                         + '&' + RPnNetworkStatus.RPN_MEDIATORPROXY_LOG_MSG_TAG + '=' + msg.toString());
-
-
               
                 System.out.println("The URL message to be published is : " + fullURL);
 
                 URL rpnMediatorURL = new URL(fullURL);
-
-
 
                 //System.out.println("Will now connect to RPn Mediator with URL..." + fullURL + '\n');
                 URLConnection rpnMediatorConn = rpnMediatorURL.openConnection();
@@ -57,9 +52,6 @@ public class RPnHttpPublisher extends RPnPublisher {
 		while ((text = buffReader.readLine()) != null) {
 
 		}
-
-
-
 
         } catch (Exception exc) {
 

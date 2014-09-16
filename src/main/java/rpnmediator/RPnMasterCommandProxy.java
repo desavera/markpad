@@ -33,7 +33,6 @@ public class RPnMasterCommandProxy extends RPnMediatorProxy {
     public static HashMap subsDatalogOBJ_ = new HashMap();
     public static HashMap subsDatalogTXT_ = new HashMap();
 
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -65,7 +64,7 @@ public class RPnMasterCommandProxy extends RPnMediatorProxy {
                             String command = (String) removed;
 
                             // for DEBUGING
-                            System.out.println("Message being retrieved by RPnCommandProxy : " + '\n' + command);
+                            System.out.println("Message being retrieved by RPnMasterCommandProxy : " + '\n' + command);
                             writer.println(command);
 
                         } 
@@ -83,7 +82,7 @@ public class RPnMasterCommandProxy extends RPnMediatorProxy {
 
                 ObjectOutputStream out = new ObjectOutputStream(response.getOutputStream());
 
-                System.out.println("Object being retrieved by RPnCommandProxy : " + '\n');
+                System.out.println("Object being retrieved by RPnMasterCommandProxy : " + '\n');
                 out.writeObject(removed);
             }
            

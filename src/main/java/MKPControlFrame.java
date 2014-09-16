@@ -4,6 +4,7 @@
  */
 package mkp;
 
+import java.net.*;
 import java.awt.*;
 import java.awt.image.*;
 import java.awt.event.*;
@@ -34,6 +35,11 @@ import java.util.logging.*;
 public class MKPControlFrame extends JFrame {
 
 
+	JButton masterConnButton_ = new JButton("MASTER CONNECT");
+	JButton pupilConnButton_ = new JButton("PUPIL CONNECT");
+	JButton highButton_ = new JButton("HIGHLIGHT MODE");
+	JButton drawButton_ = new JButton("DRAW MODE");
+	JButton clearButton_ = new JButton("CLEAR");
 	JButton onButton_ = new JButton("ON");
 	JButton offButton_ = new JButton("OFF");
 	JButton quitButton_ = new JButton("QUIT");
@@ -45,19 +51,81 @@ public class MKPControlFrame extends JFrame {
 	// No borders.
 	setUndecorated(true);
 	setLayout(new FlowLayout());
+        getContentPane().add(masterConnButton_);
+        getContentPane().add(pupilConnButton_);
+        getContentPane().add(highButton_);
+        getContentPane().add(drawButton_);
+        getContentPane().add(clearButton_);
         getContentPane().add(onButton_);
         getContentPane().add(offButton_);
         getContentPane().add(quitButton_);
 
 	glassFrame_ = glassFrame;
 
-	setVisible(false);
+
+	masterConnButton_.addActionListener(new ActionListener() {         
+	public void actionPerformed(ActionEvent e) {
+
+	    try {
+
+            	String clientID = InetAddress.getLocalHost().getHostName();
+		RPnNetworkStatus.instance().connect(clientID,true,true);
+		masterConnButton_.setEnabled(false);
+		pupilConnButton_.setEnabled(false);
+		
+	    } catch (UnknownHostException ex) {
+       		System.out.println(ex);
+            }
+	}
+	}); 
+
+	pupilConnButton_.addActionListener(new ActionListener() {         
+	public void actionPerformed(ActionEvent e) {
+ 	    try {
+
+            	String clientID = InetAddress.getLocalHost().getHostName();
+		RPnNetworkStatus.instance().connect(clientID,false,true);
+		pupilConnButton_.setEnabled(false);
+		masterConnButton_.setEnabled(false);
+
+	    } catch (UnknownHostException ex) {
+       		System.out.println(ex);
+            }
+	}
+	}); 
+
+	highButton_.addActionListener(new ActionListener() {         
+	public void actionPerformed(ActionEvent e) {
+
+		glassFrame_.pad_.setMarkMode(MKPGlassPane.HIGHLIGHT_MODE);
+		highButton_.setEnabled(false);
+		drawButton_.setEnabled(true);
+	}
+	}); 
+
+	drawButton_.addActionListener(new ActionListener() {         
+	public void actionPerformed(ActionEvent e) {
+
+		glassFrame_.pad_.setMarkMode(MKPGlassPane.DRAW_MODE);
+		drawButton_.setEnabled(false);
+		highButton_.setEnabled(true);
+	}
+	}); 
+
+	clearButton_.addActionListener(new ActionListener() {         
+	public void actionPerformed(ActionEvent e) {
+
+		glassFrame_.pad_.clear();
+	}
+	}); 
 
 	onButton_.addActionListener(new ActionListener() {         
 	public void actionPerformed(ActionEvent e) {
 
 		glassFrame_.setVisible(true);
 		MKPGlassPane.ACTIVE_SCR_CAPTURE = false;
+		onButton_.setEnabled(false);
+		offButton_.setEnabled(true);
 	}
 	}); 
 
@@ -66,6 +134,8 @@ public class MKPControlFrame extends JFrame {
 
 		glassFrame_.setVisible(false);
 		MKPGlassPane.ACTIVE_SCR_CAPTURE = true;
+		offButton_.setEnabled(false);
+		onButton_.setEnabled(true);
 	}
 	}); 
 
@@ -76,6 +146,19 @@ public class MKPControlFrame extends JFrame {
 
 	}
 	}); 
+
+	masterConnButton_.setEnabled(true);
+	pupilConnButton_.setEnabled(true);
+	highButton_.setEnabled(true);
+	drawButton_.setEnabled(true);
+	clearButton_.setEnabled(true);
+	onButton_.setEnabled(true);
+	offButton_.setEnabled(true);
+	quitButton_.setEnabled(true);
+
+	pack();
+
+	setVisible(true);
     }
 }
 

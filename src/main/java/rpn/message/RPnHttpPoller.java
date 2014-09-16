@@ -75,8 +75,20 @@ public abstract class RPnHttpPoller implements RPnResetableListener {
 
         if (mode.startsWith("SEND"))
             return RPnNetworkStatus.RPN_MEDIATORPROXY_URL + "rpnsendproxy";
-        else if (mode.startsWith("PUBLISH"))
-            return RPnNetworkStatus.RPN_MEDIATORPROXY_URL + "rpnpublishproxy";
+        else if (mode.startsWith("PUBLISH")) {
+
+	    String urlFlag = "";
+            if (hitTarget.startsWith(RPnNetworkStatus.RPN_MASTER_COMMAND_TOPIC_NAME))
+	
+
+		urlFlag = "rpnmasterpublishproxy";
+
+	    else
+		urlFlag = "rpnpupilpublishproxy";
+
+            return RPnNetworkStatus.RPN_MEDIATORPROXY_URL + urlFlag;
+
+	}
         
         else throw new java.net.MalformedURLException();
     }

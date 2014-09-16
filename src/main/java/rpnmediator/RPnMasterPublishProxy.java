@@ -13,9 +13,6 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.WebListener;
 
-
-
-
 import rpn.message.*;
 
 
@@ -24,7 +21,7 @@ import rpn.message.*;
  * @author mvera
  */
 @WebListener
-public class RPnPublishProxy extends RPnMediatorProxy {
+public class RPnMasterPublishProxy extends RPnMediatorProxy {
 
 
     @Override
@@ -42,18 +39,15 @@ public class RPnPublishProxy extends RPnMediatorProxy {
 
         if ((reqId == null) && (clientId == null) && (topicName == null))  {
 
-                System.out.println("preparing to publish the object instance... \n");
+                System.out.println("preparing to publish the object instance for master... \n");
                 RPnPublisher publisher = null;
                 ObjectInputStream in = new ObjectInputStream(request.getInputStream());
 
                 try {
 
-                    System.out.println("Will now publish the object instance... \n");
+                    System.out.println("Will now publish the object instance for master... \n");
                     Object obj = in.readObject();
 
-		    // this will lead to a problema as Pupil will send OBJ msgs too...
-		    // so , what is the topicName then ???
-		    //publisher = new RPnPublisher(RPnNetworkStatus.trimLocalJmsPrefix(topicName),true);
 		    publisher = new RPnPublisher(RPnNetworkStatus.trimLocalJmsPrefix(RPnNetworkStatus.RPN_MASTER_COMMAND_TOPIC_NAME),true);
                     publisher.publish(obj);
 
@@ -65,8 +59,6 @@ public class RPnPublishProxy extends RPnMediatorProxy {
 		if (publisher != null)
                 	publisher.close();           
         }
-
-//            responseErrorMsg(response,WRONG_INPUT_ERROR_MSG);
 
         else if (reqId.compareTo(RPnNetworkStatus.RPN_MEDIATORPROXY_PUBLISH_TAG) == 0) {
 

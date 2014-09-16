@@ -1,5 +1,0 @@
-#!/bin/bash
-
-libdir=./lib
-
-java -Dmkphome=/impa/home/w/mvera/oficina/impa/fluid/markpad -jar ./lib/mkp.jar $1

@@ -1,6 +1,0 @@
-#!/bin/bash
-
-libdir=./lib
-
-java -cp ${libdir}/jboss-client-7.1.0.Final.jar -Dmkphome=/impa/home/w/mvera/oficina/impa/fluid/markpad -jar ./lib/mkp.jar $1
-

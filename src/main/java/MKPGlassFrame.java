@@ -51,10 +51,13 @@ public class MKPGlassFrame extends JFrame {
     private static boolean TRANSLUCENCY_SUPPORT = false;
 
 
-
     public static String DTDPATH = System.getProperty("mkphome") + System.getProperty("file.separator") + "share" + System.getProperty("file.separator") + "mkp-dtd" + System.getProperty("file.separator");
     private static MKPConfigReader configReader_;
     private static InputStream configStream_;
+
+    public static int ASPECT_RATIO_W = 0;
+    public static int ASPECT_RATIO_H = 0;
+    public static String ASPECT_RATIO = "";
 
     ViewingTransform viewingTransf_; 
     MKPGlassPane pad_;
@@ -69,6 +72,17 @@ public class MKPGlassFrame extends JFrame {
         super("markPad Window");
 
         setSize(Toolkit.getDefaultToolkit().getScreenSize().width,Toolkit.getDefaultToolkit().getScreenSize().height);
+
+        ASPECT_RATIO_W = Toolkit.getDefaultToolkit().getScreenSize().width;
+	ASPECT_RATIO_H = Toolkit.getDefaultToolkit().getScreenSize().height;
+
+	int gcd = mkp.util.PrimeFactors.gcd(ASPECT_RATIO_W,ASPECT_RATIO_H);
+
+	System.out.println(ASPECT_RATIO_W/gcd);
+	System.out.println(ASPECT_RATIO_H/gcd);
+
+	ASPECT_RATIO = new String(new Integer(ASPECT_RATIO_W/gcd).toString() + ':' + new Integer(ASPECT_RATIO_H/gcd).toString());
+
         //setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

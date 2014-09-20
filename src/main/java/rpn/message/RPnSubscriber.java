@@ -226,7 +226,8 @@ public class RPnSubscriber implements MessageListener,RPnMessageListener {
             // CONTROL MESSAGES PARSING
             if (text.startsWith(RPnNetworkStatus.SLAVE_ACK_LOG_MSG))
 
-                RPnNetworkStatus.instance().ackSlaveRequest(RPnNetworkStatus.filterClientID(text));
+                RPnNetworkStatus.instance().ackSlaveRequest(RPnNetworkStatus.filterClientID(text),
+							    RPnNetworkStatus.filterAspectRatio(text));
 
 
             else if (text.startsWith(RPnNetworkStatus.MASTER_ACK_LOG_MSG)) {

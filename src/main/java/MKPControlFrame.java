@@ -35,10 +35,10 @@ import java.util.logging.*;
 public class MKPControlFrame extends JFrame {
 
 
-	JButton masterConnButton_ = new JButton("MASTER CONNECT");
-	JButton pupilConnButton_ = new JButton("PUPIL CONNECT");
-	JButton highButton_ = new JButton("HIGHLIGHT MODE");
-	JButton drawButton_ = new JButton("DRAW MODE");
+	JButton masterConnButton_ = new JButton("MASTER");
+	JButton pupilConnButton_ = new JButton("PUPIL");
+	JButton highButton_ = new JButton("HIGHLIGHT");
+	JButton drawButton_ = new JButton("DRAW");
 	JButton clearButton_ = new JButton("CLEAR");
 	JButton onButton_ = new JButton("ON");
 	JButton offButton_ = new JButton("OFF");
@@ -69,7 +69,7 @@ public class MKPControlFrame extends JFrame {
 	    try {
 
             	String clientID = InetAddress.getLocalHost().getHostName();
-		RPnNetworkStatus.instance().connect(clientID,true,true);
+		RPnNetworkStatus.instance().connect(clientID,true,true,MKPGlassFrame.ASPECT_RATIO);
 		masterConnButton_.setEnabled(false);
 		pupilConnButton_.setEnabled(false);
 		
@@ -84,7 +84,7 @@ public class MKPControlFrame extends JFrame {
  	    try {
 
             	String clientID = InetAddress.getLocalHost().getHostName();
-		RPnNetworkStatus.instance().connect(clientID,false,true);
+		RPnNetworkStatus.instance().connect(clientID,false,true,MKPGlassFrame.ASPECT_RATIO);
 		pupilConnButton_.setEnabled(false);
 		masterConnButton_.setEnabled(false);
 

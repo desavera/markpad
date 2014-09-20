@@ -98,7 +98,7 @@ public class RPnMasterReqDialog extends JDialog {
         publisher.close();
 
         // reconnect as SLAVE
-        RPnNetworkStatus.instance().connect(RPnNetworkStatus.instance().clientID(),false,RPnNetworkStatus.instance().isFirewalled());
+        RPnNetworkStatus.instance().connect(RPnNetworkStatus.instance().clientID(),false,RPnNetworkStatus.instance().isFirewalled(),mkp.MKPGlassFrame.ASPECT_RATIO);
 
         dispose();
 

@@ -338,7 +338,7 @@ class MKPControlMenu extends JPopupMenu {
 
 			try {
             			String clientID = InetAddress.getLocalHost().getHostName();
-				RPnNetworkStatus.instance().connect(clientID,true,true);
+				RPnNetworkStatus.instance().connect(clientID,true,true,MKPGlassFrame.ASPECT_RATIO);
 
 				setReadyState();
 
@@ -355,7 +355,7 @@ class MKPControlMenu extends JPopupMenu {
 
 			try {
             			String clientID = InetAddress.getLocalHost().getHostName();
-				RPnNetworkStatus.instance().connect(clientID,false,true);
+				RPnNetworkStatus.instance().connect(clientID,false,true,MKPGlassFrame.ASPECT_RATIO);
 
 				setPupilWaitingState();
 

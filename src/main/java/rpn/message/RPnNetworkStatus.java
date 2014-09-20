@@ -9,6 +9,7 @@ import java.net.*;
 import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 import mkp.MKPCommandModule;
 
@@ -28,6 +29,7 @@ public class RPnNetworkStatus {
     private boolean isMaster_;
     private boolean isOnline_;
     private boolean isFirewalled_;
+    private String aspect_;
 
     // queues up a slave request (SLAVE)
     private RPnHttpSender slaveRequestSender_ = null;
@@ -140,6 +142,11 @@ public class RPnNetworkStatus {
     public boolean isFirewalled() {
         return isFirewalled_;
     }
+
+    public String aspectRatio() {
+	return aspect_;
+    }
+
     //
     // Methods
     //
@@ -156,10 +163,11 @@ public class RPnNetworkStatus {
     }
 
 
-    public void connect(String clientID,boolean isMaster,boolean isFirewalled) {
+    public void connect(String clientID,boolean isMaster,boolean isFirewalled,String aspect_) {
 
-        clientID_ = clientID;
+        clientID_ = clientID.toString();
         isMaster_ = isMaster;
+	aspect_ = aspect_.toString();
 
 	// when no bus control activated each one is a slave but capable of posting COMMANDs...
 	if (NO_BUS_CONTROL_) {
@@ -511,7 +519,7 @@ public class RPnNetworkStatus {
 
     }
 
-    public void ackSlaveRequest(String clientID) {
+    public void ackSlaveRequest(String clientID,String master_aspect) {
 
 
         log(clientID + " has being acknowledged as SLAVE of RPNSESSION with ID : " + MKPCommandModule.SESSION_ID_ + '\n');
@@ -532,6 +540,10 @@ public class RPnNetworkStatus {
 
             log("You are now following RPNSESSION with ID : " + MKPCommandModule.SESSION_ID_ + '\n');
             RPnNetworkDialog.instance().setTitle(RPnNetworkDialog.TITLE + "PUPIL");
+
+	    if (aspect_.compareTo(master_aspect) != 0)
+	    	JOptionPane.showMessageDialog(null,
+					  "Please adjust your aspect ratio to " + master_aspect, "Aspect Warning", JOptionPane.WARNING_MESSAGE);
 
 
             // TODO > disable ALL interface
@@ -558,7 +570,7 @@ public class RPnNetworkStatus {
 
 	if (!NO_BUS_CONTROL_) {
 
-	        slaveRequestSender_.send(SLAVE_REQ_LOG_MSG + '|' + clientID_);
+	        slaveRequestSender_.send(SLAVE_REQ_LOG_MSG + '|' + clientID_ + '|' + aspect_);
         	System.out.println(SLAVE_REQ_LOG_MSG + '|' + clientID_);
 
 	} else {	
@@ -595,10 +607,16 @@ public class RPnNetworkStatus {
 
     public static String filterClientID(String text) {
 
-        String clientID = text.substring(text.indexOf('|') + 1);
-        return clientID;
+        //String clientID = text.substring(text.indexOf('|') + 1);
+        String[] split = text.split("\\|");
+        return split[0];
     }
 
+    public static String filterAspectRatio(String text) {
+
+        String[] split = text.split("\\|");
+        return split[1];
+    }
 
     public static String trimLocalJmsPrefix(String jmsName) {
 

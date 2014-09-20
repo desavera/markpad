@@ -224,7 +224,7 @@ public class RPnNetworkDialog extends JDialog implements PropertyChangeListener 
                 onlineButton.setText("Disconnect");
                 onlineButton.repaint();
 
-                RPnNetworkStatus.instance().connect(clientID,masterCheckBox.isSelected(),firewallCheckBox.isSelected());
+                RPnNetworkStatus.instance().connect(clientID,masterCheckBox.isSelected(),firewallCheckBox.isSelected(),mkp.MKPGlassFrame.ASPECT_RATIO);
 
                 // once connected ...controls are disabled !
                 masterCheckBox.setEnabled(false);

@@ -241,7 +241,6 @@ class MKPGlassPaneMouseAdapter extends MouseAdapter {
 			if (w < MKPGlassPane.MIN_SIZE || h < MKPGlassPane.MIN_SIZE)
 				return;
 
-			pane_.clear();
 
 			pane_.parentFrame_.setGlassState(MKPGlassFrame.CONFIGURED_GLASS_STATE);
 
@@ -262,8 +261,13 @@ class MKPGlassPaneMouseAdapter extends MouseAdapter {
 				loc_y = y_loc_onscr;
 			}
 
+			// BUG Fix	
+			point1_ = point2_ = null;
+
 			pane_.parentFrame_.setSize(w,h);
 			pane_.parentFrame_.setLocation(loc_x,loc_y);
+
+			pane_.clear();
 
         		if (RPnNetworkStatus.instance().isOnline() && RPnNetworkStatus.instance().isMaster()) {
 

@@ -163,11 +163,11 @@ public class RPnNetworkStatus {
     }
 
 
-    public void connect(String clientID,boolean isMaster,boolean isFirewalled,String aspect_) {
+    public void connect(String clientID,boolean isMaster,boolean isFirewalled,String aspect) {
 
         clientID_ = clientID.toString();
         isMaster_ = isMaster;
-	aspect_ = aspect_.toString();
+	aspect_ = aspect.toString();
 
 	// when no bus control activated each one is a slave but capable of posting COMMANDs...
 	if (NO_BUS_CONTROL_) {
@@ -559,7 +559,7 @@ public class RPnNetworkStatus {
             slaveAckSubscriberThread_ = new RPnSubscriberThread(RPN_SLAVE_ACK_TOPIC_NAME);
 
         slaveAckSubscriberThread_.start();
-        System.out.println("Will be listening to SLAVE ACK now...");
+        Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO, "Will be listening to SLAVE ACK now...");
     }
 
     public void sendSlaveRequest() {
@@ -570,8 +570,7 @@ public class RPnNetworkStatus {
 
 	if (!NO_BUS_CONTROL_) {
 
-	        slaveRequestSender_.send(SLAVE_REQ_LOG_MSG + '|' + clientID_ + '|' + aspect_);
-        	System.out.println(SLAVE_REQ_LOG_MSG + '|' + clientID_);
+	        slaveRequestSender_.send(SLAVE_REQ_LOG_MSG + '|' + clientID_);
 
 	} else {	
 
@@ -607,15 +606,18 @@ public class RPnNetworkStatus {
 
     public static String filterClientID(String text) {
 
-        //String clientID = text.substring(text.indexOf('|') + 1);
         String[] split = text.split("\\|");
-        return split[0];
+	System.out.println("the txt to split is : " + text);
+	System.out.println("client id is : " + split[1]);
+        return split[1];
     }
 
     public static String filterAspectRatio(String text) {
 
         String[] split = text.split("\\|");
-        return split[1];
+	System.out.println("the txt to split is : " + text);
+	System.out.println("aspect is : " + split[2]);
+        return split[2];
     }
 
     public static String trimLocalJmsPrefix(String jmsName) {

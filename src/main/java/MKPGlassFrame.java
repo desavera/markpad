@@ -78,12 +78,9 @@ public class MKPGlassFrame extends JFrame {
 
 	int gcd = mkp.util.PrimeFactors.gcd(ASPECT_RATIO_W,ASPECT_RATIO_H);
 
-	System.out.println(ASPECT_RATIO_W/gcd);
-	System.out.println(ASPECT_RATIO_H/gcd);
+	ASPECT_RATIO = new String(new Integer(ASPECT_RATIO_W/gcd).toString() + ':' + new Integer(ASPECT_RATIO_H/gcd).toString()).toString();
 
-	ASPECT_RATIO = new String(new Integer(ASPECT_RATIO_W/gcd).toString() + ':' + new Integer(ASPECT_RATIO_H/gcd).toString());
-
-        //setLocationRelativeTo(null);
+        // setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	// No borders.
@@ -119,7 +116,7 @@ public class MKPGlassFrame extends JFrame {
 	   } else if (RPnNetworkStatus.instance().isOnline() && RPnNetworkStatus.NO_BUS_CONTROL_)
 		RPnNetworkStatus.instance().disconnect();
 
-	 	execCloseCommand();
+	   execCloseCommand();
        	 }  
       	});  
 
@@ -180,8 +177,6 @@ public class MKPGlassFrame extends JFrame {
 		if (bckgdFrame_ == null)
 			bckgdFrame_ = new MKPBackgroundFrame();
 
-		System.out.println("IMAGE w is : " + bi.getImage().getWidth());
-		System.out.println("IMAGE h is : " + bi.getImage().getHeight());
 		bckgdFrame_.setSize(bi.getImage().getWidth(),
 				    bi.getImage().getHeight());
 
@@ -333,31 +328,30 @@ public class MKPGlassFrame extends JFrame {
 			ex.printStackTrace();
 
         	} catch (SAXParseException e) {
+
             		System.out.println("The document is not valid");
             		System.out.println("Because:  " + e);
             		System.out.println("Line: " + e.getLineNumber());
             		System.out.println("Column: " + e.getColumnNumber());
+
             		// if the document is invalid, then the execution will reach here
             		// because we throw an exception for an error.
 			e.printStackTrace();
-
 
         	} catch (SAXException ex) {
 
             		ex.printStackTrace();
 
-
-
         	} catch (IOException exception) {
         	} finally {
-            		try {
+            	try {
 
                		 configStream_.close();
-            		} catch (NullPointerException ex) {
-            		} catch (IOException ex) {
-               			 System.out.println("IO Error");
-            		}
 
+            	} catch (NullPointerException ex) {
+            	} catch (IOException ex) {
+               		 System.out.println("IO Error");
+            	}
         	};
 	
             }

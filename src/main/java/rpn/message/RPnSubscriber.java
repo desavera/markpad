@@ -224,14 +224,16 @@ public class RPnSubscriber implements MessageListener,RPnMessageListener {
             Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO, "Text message received !" + text);
             
             // CONTROL MESSAGES PARSING
-            if (text.startsWith(RPnNetworkStatus.SLAVE_ACK_LOG_MSG))
+            if (text.startsWith(RPnNetworkStatus.SLAVE_ACK_LOG_MSG)) {
+            
 
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO, "Will now ack slave req...");
                 RPnNetworkStatus.instance().ackSlaveRequest(RPnNetworkStatus.filterClientID(text),
 							    RPnNetworkStatus.filterAspectRatio(text));
 
 
-            else if (text.startsWith(RPnNetworkStatus.MASTER_ACK_LOG_MSG)) {
-
+            } else if (text.startsWith(RPnNetworkStatus.MASTER_ACK_LOG_MSG)) {
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO, "Will now ack master req...");
                 RPnNetworkStatus.instance().ackMasterRequest(RPnNetworkStatus.filterClientID(text));
 
             } else if (text.startsWith(RPnNetworkStatus.MASTER_REQUEST_LOG_MSG)) {

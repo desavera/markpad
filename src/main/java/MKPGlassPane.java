@@ -19,6 +19,8 @@ public class MKPGlassPane extends JPanel {
     public static int HIGHLIGHT_MODE = 0;
     public static int DRAW_MODE = 1;
 
+    public static int MIN_SIZE = 50;
+
     public static int MKP_SCREEN_CAPTURE_INTERVAL = 5000;
 
     public static volatile boolean ACTIVE_SCR_CAPTURE = false;
@@ -114,10 +116,22 @@ public class MKPGlassPane extends JPanel {
        	   		g2d.setPaint(Color.RED);
        	   		g2d.setStroke(new BasicStroke(3.0f));
 
-       	   		g2d.drawRect(mouseAdapter_.point1_.x,
-       	                mouseAdapter_.point1_.y,
-       	                mouseAdapter_.point2_.x - mouseAdapter_.point1_.x,
-       	                mouseAdapter_.point2_.y - mouseAdapter_.point1_.y);
+			if (mouseAdapter_.point1_.x < mouseAdapter_.point2_.x) {
+
+       	   			g2d.drawRect(mouseAdapter_.point1_.x,
+       	                	mouseAdapter_.point1_.y,
+       	                	mouseAdapter_.point2_.x - mouseAdapter_.point1_.x,
+       	                	mouseAdapter_.point2_.y - mouseAdapter_.point1_.y);
+			}
+
+			if (mouseAdapter_.point1_.x > mouseAdapter_.point2_.x) {
+
+       	   			g2d.drawRect(mouseAdapter_.point2_.x,
+       	                	mouseAdapter_.point2_.y,
+       	                	mouseAdapter_.point1_.x - mouseAdapter_.point2_.x,
+       	                	mouseAdapter_.point1_.y - mouseAdapter_.point2_.y);
+			}
+
 		}
 
    } else  { // already initiated ... so we have a mode !
@@ -205,7 +219,6 @@ class MKPGlassPaneMouseAdapter extends MouseAdapter {
 
     		point2_ = e.getPoint();
     		pane_.repaint();
-
   	}
 
 	@Override
@@ -219,24 +232,35 @@ class MKPGlassPaneMouseAdapter extends MouseAdapter {
 
     		point2_ = e.getPoint();
 
-		/*if (SwingUtilities.isRightMouseButton(e)) {
-
-        		pane_.menu_.show(e.getComponent(), e.getX(), e.getY());
-
-		} else */
 
 		if (pane_.parentFrame_.getGlassState() == MKPGlassFrame.INIT_GLASS_STATE) {
+
+			int w = Math.abs(point2_.x - point1_.x);
+			int h = Math.abs(point2_.y - point1_.y);
+
+			if (w < MKPGlassPane.MIN_SIZE || h < MKPGlassPane.MIN_SIZE)
+				return;
+
+			pane_.clear();
 
 			pane_.parentFrame_.setGlassState(MKPGlassFrame.CONFIGURED_GLASS_STATE);
 
 			int org_x_loc = pane_.parentFrame_.getLocation().x;
 			int org_y_loc = pane_.parentFrame_.getLocation().y;
 
-			int w = point2_.x - point1_.x;
-			int h = point2_.y - point1_.y;
 
-			int loc_x = x_loc_onscr - w;
-			int loc_y = y_loc_onscr - h;
+			int loc_x = 0;
+			int loc_y = 0;
+
+			if (point1_.x < point2_.x) {
+				loc_x = x_loc_onscr - w;
+				loc_y = y_loc_onscr - h;
+			}
+
+			if (point1_.x > point2_.x) {
+				loc_x = x_loc_onscr;
+				loc_y = y_loc_onscr;
+			}
 
 			pane_.parentFrame_.setSize(w,h);
 			pane_.parentFrame_.setLocation(loc_x,loc_y);
@@ -272,8 +296,6 @@ class MKPGlassPaneMouseAdapter extends MouseAdapter {
 				} catch (Exception ex) { ex.printStackTrace();}
 
 			}
-
-			//pane_.menu_.setReadyState();
 		}
 
 	}

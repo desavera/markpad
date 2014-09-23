@@ -143,7 +143,6 @@ public class MKPControlFrame extends JFrame {
 	public void actionPerformed(ActionEvent e) {
 
 		glassFrame_.execCloseCommand();
-
 	}
 	}); 
 
@@ -161,4 +160,3 @@ public class MKPControlFrame extends JFrame {
 	setVisible(true);
     }
 }
-

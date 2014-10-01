@@ -76,8 +76,8 @@ public class DrawController implements MKPGlassUI  {
                        	 SerializablePathIterator wPath = new SerializablePathIterator(wpath_.getPathIterator(new AffineTransform()));
                        	 RPnNetworkStatus.instance().sendCommand(wPath);                       
 
-			 wpath_.reset();
-			 path_.reset();
+			 //wpath_.reset();
+			 //path_.reset();
 
                     	}
 		    }

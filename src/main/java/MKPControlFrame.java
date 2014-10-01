@@ -133,6 +133,7 @@ public class MKPControlFrame extends JFrame {
 	public void actionPerformed(ActionEvent e) {
 
 		glassFrame_.setVisible(false);
+		glassFrame_.pad_.clear();
 		MKPGlassPane.ACTIVE_SCR_CAPTURE = true;
 		offButton_.setEnabled(false);
 		onButton_.setEnabled(true);

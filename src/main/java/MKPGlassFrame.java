@@ -211,8 +211,7 @@ public class MKPGlassFrame extends JFrame {
 
     public void execClearCommand() {
 
-	if (pad_.getController() != null)
-		pad_.getController().clear();
+	pad_.clear();
     }
 
     public void execMarkCommand(String mins,String maxs) {

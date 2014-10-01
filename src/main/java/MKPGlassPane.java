@@ -101,8 +101,8 @@ public class MKPGlassPane extends JPanel {
 
 	g.clearRect(0,0,getWidth(),getHeight());
 
-	if (currentController_ != null)
-		currentController_.clear();
+	highLightController_.clear();
+	drawController_.clear();
 
         doClear_ = false;
 

@@ -32,6 +32,8 @@ import org.iso_relax.verifier.Verifier;
 import org.iso_relax.verifier.VerifierFactory;
 import org.xml.sax.SAXParseException;
 
+import javax.jnlp.*;
+
 /**
  *
  * @author mvera
@@ -275,6 +277,8 @@ public class MKPGlassFrame extends JFrame {
 
     public static void main(final String[] args) {
 
+	BasicService basicService = null;
+
         // Determine if the GraphicsDevice supports translucency.
         GraphicsEnvironment ge = 
             GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -286,6 +290,14 @@ public class MKPGlassFrame extends JFrame {
                 "Translucency is not supported");
 
         } else TRANSLUCENCY_SUPPORT = true;
+
+	// check for JNLP support...
+	try {
+   	   basicService = (BasicService)
+       	   ServiceManager.lookup("javax.jnlp.BasicService");
+    	} catch (UnavailableServiceException e) {
+      	   System.err.println("Lookup failed: " + e);
+    	}
         
         //JFrame.setDefaultLookAndFeelDecorated(true);
 

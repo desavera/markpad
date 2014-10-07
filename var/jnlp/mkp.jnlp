@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+" codebase="http://localhost:8080/" href="jnlp/mkp.jnlp">
+    <information>
+        <title>MKP Jnlp Testing</title>
+        <vendor>Antena Digital</vendor>
+        <homepage href="http://localhost:8080/jnlp" />
+        <description>Testing Testing</description>
+    </information>
+    <security>
+        <all-permissions/>
+    </security>
+    <resources>
+        <j2se version="1.7+" />
+        <jar href="jnlp/mkp.jar" />
+    </resources>
+    <application-desc main-class="mkp.MKPGlassFrame" />
+</jnlp>

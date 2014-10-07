@@ -216,13 +216,24 @@ public class MKPGlassFrame extends JFrame {
 
     public void execMarkCommand(String mins,String maxs) {
 
-	double[] p1 = new RealVector(mins).toDouble();
-	double[] p2 = new RealVector(maxs).toDouble();
 
-	pad_.highLightController_.mark(p1,p2);
+	if (pad_.isVisible()) {
 
-	pad_.invalidate();
-	pad_.repaint();
+		double[] p1 = new RealVector(mins).toDouble();
+		double[] p2 = new RealVector(maxs).toDouble();
+
+		pad_.highLightController_.mark(p1,p2);
+
+		pad_.invalidate();
+		pad_.repaint();
+
+	}
+
+	// OFF
+	else {
+
+		JOptionPane.showMessageDialog(this, "Annotations are being missed...");
+	}
     }
 
     public void execDrawCommand(SerializablePathIterator it) {

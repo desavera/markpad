@@ -1,32 +1,65 @@
 apply plugin: 'java'
 
-defaultTasks 'hello','release'
+defaultTasks 'build'
 
-task hello {
-
-	doLast {
-
-		println 'Hello Man !!!'
-
-	}
+task distribution(dependsOn: 'copybin')  {
+    println 'Generating a new distribution'
 }
 
-task distribution << {
-    println "We build the zip with version=$version"
+task copybin(type: Copy, dependsOn: 'copyshare' )  {
+    println 'Copy into bin'
+
+    from 'bin'
+    into 'dist/markpad/bin'
 }
 
-task release(dependsOn: 'distribution') << {
+task copyshare(type: Copy, dependsOn: 'copydepends')  {
+    println 'Copy into share'
+
+    from 'share'
+    into 'dist/markpad/share'
+}
+
+task copydepends(type: Copy, dependsOn: 'copyclasses')  {
+    println 'Copy into depends'
+
+    from 'depends'
+    into 'dist/markpad/depends'
+}
+
+task copyclasses(type: Copy)  {
+    println 'Copy classes'
+
+    from 'build/libs'
+    into 'dist/markpad'
+}
+
+task pack(type: Zip) {
+
+    FileTree dist = fileTree(dir: 'dist')
+
+    from dist
+}
+
+task release(dependsOn: 'pack') {
     println 'We release now'
 }
 
 gradle.taskGraph.whenReady {taskGraph ->
     if (taskGraph.hasTask(release)) {
-        version = '0.2.0'
+        version = 'BETA-1.0.1'
     } else {
-        version = '2.0-SNAPSHOT'
+        version = '0.1-SNAPSHOT'
     }
 }
 
+repositories {
+
+    mavenCentral()
+}
+
 dependencies {
-    compile files('lib/log4j.jar','lib/javaee-api-6.0.jar','lib/jbossall-client.jar','lib/vecmath.jar','lib/pdf.jar','lib/xml4j.jar','lib/jlapack-0.6.jar','lib/msv.jar','lib/iso-relax.jar','lib/batik-awt-util.jar','lib/batik-util.jar','lib/batik-dom.jar','lib/batik-xml.jar','lib/batik-ext.jar','lib/batik-svg-dom.jar','lib/batik-svggen.jar','lib/wave.jar','lib/rpn.jar')
+
+    compile fileTree(dir: 'depends' , include: '*.jar')
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.0.+'
 }

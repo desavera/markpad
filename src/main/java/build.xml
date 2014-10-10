@@ -39,7 +39,7 @@
         <jar destfile="${libdir}/mkp.jar" basedir="${classdir}">
             <manifest>
                 <attribute name="Main-Class" value="mkp/MKPGlassFrame"/>
-                <attribute name="Class-path" value="./rpn.jar ./vecmath.jar ./log4j.jar ./jbossall-client.jar \
+                <attribute name="Class-path" value="./javaws.jar ./rpn.jar ./vecmath.jar ./log4j.jar ./jbossall-client.jar \
 			./pdflib.jar ./xml4j.jar ./jlapack-0.6.jar ./msv.jar ./iso-relax.jar \
 			./batik-awt-util.jar ./batik-util.jar ./batik-dom.jar ./batik-xml.jar ./batik-ext.jar ./batik-svg-dom.jar ./batik-svggen.jar "/>
             </manifest>

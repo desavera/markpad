@@ -229,7 +229,8 @@ public class RPnSubscriber implements MessageListener,RPnMessageListener {
 
 		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO, "Will now ack slave req...");
                 RPnNetworkStatus.instance().ackSlaveRequest(RPnNetworkStatus.filterClientID(text),
-							    RPnNetworkStatus.filterAspectRatio(text));
+							    RPnNetworkStatus.filterAspectRatio(text),
+							    RPnNetworkStatus.filterPupilColor(text));
 
 
             } else if (text.startsWith(RPnNetworkStatus.MASTER_ACK_LOG_MSG)) {

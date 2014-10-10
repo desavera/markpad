@@ -24,10 +24,14 @@ public class RPnSlaveReqDialog extends JDialog {
     JPanel infoPanel = new JPanel();    
     JPanel buttonsPanel = new JPanel();    
 
+    JComboBox colorCombo = new JComboBox();
+
     JButton allowButton = new JButton("Allow");
     JButton denyButton = new JButton("Deny");
 
     BorderLayout gridLayout = new BorderLayout();
+
+    String colorChosen = new String("color N/A");
 
     public JLabel infoLabel = new JLabel("A request for joining the session has arrived from : ");
 
@@ -58,8 +62,22 @@ public class RPnSlaveReqDialog extends JDialog {
         infoLabel.setText(infoLabel.getText() + clientID);
         infoPanel.add(infoLabel);
 
-        buttonsPanel.add(allowButton);
-        buttonsPanel.add(denyButton);
+	colorCombo.addItem("Blue");
+	colorCombo.addItem("Yellow");
+
+	colorCombo.addActionListener(new ActionListener() {
+      		public void actionPerformed(ActionEvent e) {
+       		 colorChosen = (String)((JComboBox) e.getSource()).getSelectedItem();
+
+		 if (colorChosen.compareTo("color N/A") == 0) colorChosen = "Blue";
+      		}
+    	});
+
+        buttonsPanel.setLayout(new BorderLayout());
+        buttonsPanel.add(denyButton,BorderLayout.WEST);
+        buttonsPanel.add(allowButton,BorderLayout.CENTER);
+
+	buttonsPanel.add(colorCombo,BorderLayout.EAST);
 
         mainPanel.setLayout(gridLayout);
         mainPanel.add(infoPanel,BorderLayout.NORTH);
@@ -82,7 +100,7 @@ public class RPnSlaveReqDialog extends JDialog {
         });
 
 
-        pack();
+	pack();
 
 
     }
@@ -90,7 +108,7 @@ public class RPnSlaveReqDialog extends JDialog {
     void allowButton_actionPerformed(ActionEvent e) {
 
         RPnHttpPublisher publisher = new RPnHttpPublisher(RPnNetworkStatus.RPN_SLAVE_ACK_TOPIC_NAME);
-        publisher.publish(RPnNetworkStatus.SLAVE_ACK_LOG_MSG + '|' + clientID + '|' + RPnNetworkStatus.instance().aspectRatio());
+        publisher.publish(RPnNetworkStatus.SLAVE_ACK_LOG_MSG + '|' + clientID + '|' + RPnNetworkStatus.instance().aspectRatio() + '|' + colorChosen);
         publisher.close();
 
         dispose();

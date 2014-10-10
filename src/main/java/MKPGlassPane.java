@@ -16,29 +16,32 @@ import rpn.message.*;
 
 public class MKPGlassPane extends JPanel {
 
-    public static int HIGHLIGHT_MODE = 0;
-    public static int DRAW_MODE = 1;
+  public static int HIGHLIGHT_MODE = 0;
+  public static int DRAW_MODE = 1;
 
-    public static int MIN_SIZE = 50;
+  public static int MIN_SIZE = 50;
 
-    public static int MKP_SCREEN_CAPTURE_INTERVAL = 5000;
+  public static int MKP_SCREEN_CAPTURE_INTERVAL = 5000;
 
-    public static volatile boolean ACTIVE_SCR_CAPTURE = false;
+  public static volatile boolean ACTIVE_SCR_CAPTURE = false;
 
-    Boolean doClear_;
-    HighLightController highLightController_;
-    DrawController drawController_;
+  public static Color MASTER_PEN_COLOR = Color.RED;
 
-    Color markColor_ = Color.RED;
 
-    MKPGlassUI currentController_;	
-    int currentMode_;
-    MKPGlassFrame parentFrame_;
-    MKPGlassPaneMouseAdapter mouseAdapter_;
+  Boolean doClear_;
+  HighLightController highLightController_;
+  DrawController drawController_;
 
-    MKPControlMenu menu_;
+  Color myPenColor = MASTER_PEN_COLOR;
 
-    SerializableBufferedImage backgroundImage_;
+  MKPGlassUI currentController_;	
+  MKPGlassFrame parentFrame_;
+  MKPGlassPaneMouseAdapter mouseAdapter_;
+  MKPControlMenu menu_;
+
+  int currentMode_;
+
+  SerializableBufferedImage backgroundImage_;
 
   public MKPGlassPane(MKPGlassFrame parentFrame) {
 
@@ -56,14 +59,11 @@ public class MKPGlassPane extends JPanel {
        //setBackground(new Color(255, 0, 0, 50));
 
        mouseAdapter_ = new MKPGlassPaneMouseAdapter(this);
-
-	// no menu for now...
-       //menu_ = new MKPControlMenu(this);
   }
 
   public MKPGlassUI getController() {return currentController_;}
   public void setBackgroundImage(SerializableBufferedImage image) { backgroundImage_ = image;}
-  public void setMarkColor(Color color) {markColor_ = color;}
+  public void setMarkColor(Color color) {myPenColor = color;}
 
   /*
    * no need to keep switching modes over the network...
@@ -72,7 +72,6 @@ public class MKPGlassPane extends JPanel {
   public synchronized void setMarkMode(int mode) {
 
 	currentMode_ = mode;
-
 	currentController_.uninstall(this);
 
 	if (mode == HIGHLIGHT_MODE) {
@@ -137,10 +136,10 @@ public class MKPGlassPane extends JPanel {
    } else  { // already initiated ... so we have a mode !
 
 		//g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.5f));
-		g.setColor(markColor_);
 		//if (currentController_ != null)
 		//	currentController_.paintComponent(g);
 
+		g.setColor(myPenColor);	
 		drawController_.paintComponent(g);
 		highLightController_.paintComponent(g);
 	}
@@ -353,7 +352,7 @@ class MKPControlMenu extends JPopupMenu {
 		add(highlightMode_);
 		add(drawMode_);
 		add(clear_);
-		add(colorSettings_);
+		//add(colorSettings_);
 		add(exit_);
 
 

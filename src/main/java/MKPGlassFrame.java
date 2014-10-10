@@ -170,6 +170,16 @@ public class MKPGlassFrame extends JFrame {
 
     }
 
+    public void execSetPupilColorCommand(String color) {
+
+	if (color.compareTo("Blue") == 0) 
+		pad_.setMarkColor(Color.blue);
+	if (color.compareTo("Yellow") == 0) 
+		pad_.setMarkColor(Color.yellow);
+
+
+    }
+
     public void execSetPadBackgroundCommand(SerializableBufferedImage bi) {
 
 	// ONLY PUPILS SHOULD RUN THIS !!! 

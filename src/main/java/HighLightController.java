@@ -25,6 +25,8 @@ public class HighLightController implements MKPGlassUI {
 
     private boolean active_ = false;
 
+    private boolean myPen_ = true;
+
     public HighLightController(MKPGlassPane panel,ViewingTransform vTransform) {
 
        doClear_ = false;
@@ -98,6 +100,8 @@ public class HighLightController implements MKPGlassUI {
 	point1_ = new Point((int)Math.round(dcPoint1.getX()),(int)Math.round(dcPoint1.getY()));
 	point2_ = new Point((int)Math.round(dcPoint2.getX()),(int)Math.round(dcPoint2.getY()));
 
+	myPen_ = false;
+
 	installedPanel_.invalidate();
 	installedPanel_.repaint();
     }
@@ -125,7 +129,16 @@ public class HighLightController implements MKPGlassUI {
     @Override
     public void paintComponent(Graphics g){
 
+	
+
     	Graphics2D g2d = (Graphics2D) g;
+
+	Color org_color = g2d.getColor();
+	if (!myPen_) {
+		g2d.setColor(Color.RED);
+		myPen_ = true;
+	}
+		
     	if(point1_!=null && point2_!=null){
 
        	   g2d.setStroke(new BasicStroke(2.0f));
@@ -135,6 +148,8 @@ public class HighLightController implements MKPGlassUI {
        	                point2_.x - point1_.x,
        	                point2_.y - point1_.y);
     	}
+
+	g2d.setColor(org_color);
    }   
 
    public void clear() {

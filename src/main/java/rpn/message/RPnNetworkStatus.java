@@ -519,7 +519,7 @@ public class RPnNetworkStatus {
 
     }
 
-    public void ackSlaveRequest(String clientID,String master_aspect) {
+    public void ackSlaveRequest(String clientID,String master_aspect,String pupilColor) {
 
 
         log(clientID + " has being acknowledged as SLAVE of RPNSESSION with ID : " + MKPCommandModule.SESSION_ID_ + '\n');
@@ -544,6 +544,8 @@ public class RPnNetworkStatus {
 	    if (aspect_.compareTo(master_aspect) != 0)
 	    	JOptionPane.showMessageDialog(null,
 					  "Please adjust your aspect ratio to " + master_aspect, "Aspect Warning", JOptionPane.WARNING_MESSAGE);
+
+	    MKPCommandModule.setPupilColor(pupilColor);
 
 
             // TODO > disable ALL interface
@@ -607,17 +609,19 @@ public class RPnNetworkStatus {
     public static String filterClientID(String text) {
 
         String[] split = text.split("\\|");
-	System.out.println("the txt to split is : " + text);
-	System.out.println("client id is : " + split[1]);
         return split[1];
     }
 
     public static String filterAspectRatio(String text) {
 
         String[] split = text.split("\\|");
-	System.out.println("the txt to split is : " + text);
-	System.out.println("aspect is : " + split[2]);
         return split[2];
+    }
+
+    public static String filterPupilColor(String text) {
+
+        String[] split = text.split("\\|");
+        return split[3];
     }
 
     public static String trimLocalJmsPrefix(String jmsName) {

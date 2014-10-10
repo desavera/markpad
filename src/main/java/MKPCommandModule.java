@@ -31,6 +31,11 @@ public class MKPCommandModule {
 
     public static String SESSION_ID_ = "8888";
 
+    public static void setPupilColor(String color) {
+
+	MKPGlassFrame.instance().execSetPupilColorCommand(color);
+    }
+
     static public class MKPCommandParser implements ContentHandler {
 
         private String currentElement_;
@@ -50,6 +55,7 @@ public class MKPCommandModule {
 	    senderID_ = new String("NULL");
 
         }
+
 
         @Override
         public void endDocument() {

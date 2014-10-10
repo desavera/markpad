@@ -25,6 +25,7 @@ import wave.multid.view.ViewingTransform;
 
 public class DrawController implements MKPGlassUI  {
 
+
    
     private GeneralPath path_;
     private GeneralPath wpath_;
@@ -33,6 +34,8 @@ public class DrawController implements MKPGlassUI  {
 
     private MouseAdapter mouseAdapter_;
     private MKPGlassPane installedPanel_;
+
+    private boolean myPen_ = true;
 
     private boolean active_ = false;
   
@@ -170,6 +173,8 @@ public class DrawController implements MKPGlassUI  {
 
             }
 
+	    myPen_ = false;
+
             installedPanel_.invalidate();
             installedPanel_.repaint();
         }
@@ -181,10 +186,19 @@ public class DrawController implements MKPGlassUI  {
     @Override
     public void paintComponent(Graphics g) {
                
-	Stroke stroke = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0,
-        new float[] { 3, 1 }, 0);
+	Stroke stroke = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0,new float[] { 3, 1 }, 0);
+	Color org_color = g.getColor();
+
+        if (!myPen_) {
+                g.setColor(Color.RED);
+		myPen_ = true;
+	}
+
+
     	((Graphics2D)g).setStroke(stroke);
         ((Graphics2D)g).draw(path_);
+
+	g.setColor(org_color);
     }
 
     public void clear() {

@@ -93,7 +93,6 @@ public class MKPGlassFrame extends JFrame {
 	pad_ = new MKPGlassPane(this);
         getContentPane().add(pad_);
 
-        // Set the window to 55% opaque (45% translucent).
 	if (TRANSLUCENCY_SUPPORT) setOpacity(INIT_GLASS_OPACITY);
 
         // Display the window.
@@ -228,8 +227,9 @@ public class MKPGlassFrame extends JFrame {
 
     public void execMarkCommand(String mins,String maxs) {
 
+        Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO, "MARK command recieved...");
 
-	if (pad_.isVisible()) {
+	if (isVisible()) {
 
 		double[] p1 = new RealVector(mins).toDouble();
 		double[] p2 = new RealVector(maxs).toDouble();
@@ -336,8 +336,6 @@ public class MKPGlassFrame extends JFrame {
         	// this error handler will throw an exception if there is an error
         	verifier.setErrorHandler(com.sun.msv.verifier.util.ErrorHandlerImpl.theInstance);
 
-
-
 		if (args.length > 0) {
 
         		if (verifier.verify(new File(args[0])))
@@ -385,9 +383,7 @@ public class MKPGlassFrame extends JFrame {
                		 System.out.println("IO Error");
             	}
         	};
-	
             }
         });
     }
 }
-

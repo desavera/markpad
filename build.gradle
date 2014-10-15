@@ -1,6 +1,45 @@
+buildscript {
+  repositories {
+    jcenter()
+    mavenCentral()
+  }
+  dependencies {
+    classpath 'org.hidetake:gradle-ssh-plugin:0.4.2'
+    classpath 'org.apache.logging.log4j:log4j-api:2.0.+'
+  }
+}
+
+//remotes {
+//  web01 {
+//    role 'masterNode'
+//    host = '192.168.0.32'
+//    user = 'root'
+//    password = 'pinguim01'
+//  }
+//}
+
+//task checkWebServer << {
+//  ssh.run {
+//    session(remotes.web01) {
+//	// Execute a command
+//	def result = execute 'uptime'
+//
+//	// Any Gradle methods or properties can be used in a session closure
+//	copy {
+//	  from "build/distributions/"
+//	  into "/tmp/"
+//	}
+//
+//	// Also Groovy methods or properties can be used in a session closure
+//	println result
+ //   }
+ // }
+//}
+
+
 apply plugin: 'java'
 
-defaultTasks 'build'
+defaultTasks 'compileJava'
 
 task distribution(dependsOn: 'copybin')  {
     println 'Generating a new distribution'
@@ -37,7 +76,6 @@ task copyclasses(type: Copy)  {
 task pack(type: Zip) {
 
     FileTree dist = fileTree(dir: 'dist')
-
     from dist
 }
 
@@ -49,17 +87,11 @@ gradle.taskGraph.whenReady {taskGraph ->
     if (taskGraph.hasTask(release)) {
         version = 'BETA-1.0.1'
     } else {
-        version = '0.1-SNAPSHOT'
+        version = '1.0-SNAPSHOT'
     }
 }
 
-repositories {
-
-    mavenCentral()
-}
-
 dependencies {
-
     compile fileTree(dir: 'depends' , include: '*.jar')
-    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.0.+'
+
 }

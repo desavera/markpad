@@ -31,10 +31,9 @@ public class RPnSlaveReqDialog extends JDialog {
 
     BorderLayout gridLayout = new BorderLayout();
 
-    String colorChosen = new String("color N/A");
+    String colorChosen = new String("Blue");
 
     public JLabel infoLabel = new JLabel("A request for joining the session has arrived from : ");
-
 
 
     public RPnSlaveReqDialog(String reqClientID) {
@@ -68,8 +67,6 @@ public class RPnSlaveReqDialog extends JDialog {
 	colorCombo.addActionListener(new ActionListener() {
       		public void actionPerformed(ActionEvent e) {
        		 colorChosen = (String)((JComboBox) e.getSource()).getSelectedItem();
-
-		 if (colorChosen.compareTo("color N/A") == 0) colorChosen = "Blue";
       		}
     	});
 
@@ -77,11 +74,20 @@ public class RPnSlaveReqDialog extends JDialog {
         buttonsPanel.add(denyButton,BorderLayout.WEST);
         buttonsPanel.add(allowButton,BorderLayout.CENTER);
 
-	buttonsPanel.add(colorCombo,BorderLayout.EAST);
+	JPanel leftPanel = new JPanel();
+	leftPanel.add(buttonsPanel);
+
+	JPanel rightPanel = new JPanel();
+	rightPanel.add(colorCombo);
+
+	JPanel fullPanel = new JPanel();
+	fullPanel.setLayout(new FlowLayout());
+	fullPanel.add(leftPanel);
+	fullPanel.add(rightPanel);
 
         mainPanel.setLayout(gridLayout);
         mainPanel.add(infoPanel,BorderLayout.NORTH);
-        mainPanel.add(buttonsPanel,BorderLayout.SOUTH);
+        mainPanel.add(fullPanel,BorderLayout.SOUTH);
 
         getContentPane().add(mainPanel);
 

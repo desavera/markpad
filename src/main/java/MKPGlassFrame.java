@@ -225,7 +225,7 @@ public class MKPGlassFrame extends JFrame {
 	pad_.clear();
     }
 
-    public void execMarkCommand(String mins,String maxs) {
+    public synchronized void execMarkCommand(String mins,String maxs,Color penColor) {
 
         Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO, "MARK command recieved...");
 
@@ -234,11 +234,10 @@ public class MKPGlassFrame extends JFrame {
 		double[] p1 = new RealVector(mins).toDouble();
 		double[] p2 = new RealVector(maxs).toDouble();
 
-		pad_.highLightController_.mark(p1,p2);
+		pad_.highLightController_.mark(p1,p2,penColor);
 
 		pad_.invalidate();
 		pad_.repaint();
-
 	}
 
 	// OFF
@@ -248,7 +247,7 @@ public class MKPGlassFrame extends JFrame {
 	}
     }
 
-    public void execDrawCommand(SerializablePathIterator it) {
+    public synchronized void execDrawCommand(SerializablePathIterator it) {
 
 	pad_.drawController_.updatePath(it);
 

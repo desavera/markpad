@@ -64,6 +64,7 @@ public class MKPGlassPane extends JPanel {
   public MKPGlassUI getController() {return currentController_;}
   public void setBackgroundImage(SerializableBufferedImage image) { backgroundImage_ = image;}
   public void setMarkColor(Color color) {myPenColor = color;}
+  public Color getMarkColor() {return myPenColor;}
 
   /*
    * no need to keep switching modes over the network...

@@ -12,6 +12,8 @@ import javax.swing.*;
 import javax.swing.JDialog;
 import java.awt.event.*;
 
+import mkp.*;
+
 /**
  *
  * <p>The dialog used to grant permission to a Slave user to take part on a RPN SESSION </p>
@@ -58,6 +60,8 @@ public class RPnSlaveReqDialog extends JDialog {
         setResizable(false);
         setTitle("RPn Session Access Grant");
 
+	MKPCommandModule.PEN_COLOR_MAP.put(clientID,"Blue");
+
         infoLabel.setText(infoLabel.getText() + clientID);
         infoPanel.add(infoLabel);
 
@@ -67,6 +71,7 @@ public class RPnSlaveReqDialog extends JDialog {
 	colorCombo.addActionListener(new ActionListener() {
       		public void actionPerformed(ActionEvent e) {
        		 colorChosen = (String)((JComboBox) e.getSource()).getSelectedItem();
+		 MKPCommandModule.PEN_COLOR_MAP.put(clientID,colorChosen);
       		}
     	});
 

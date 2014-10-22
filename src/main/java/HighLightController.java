@@ -26,6 +26,8 @@ public class HighLightController implements MKPGlassUI {
     private boolean active_ = false;
 
     private boolean myPen_ = true;
+ 
+    private Color theirColor = MKPGlassPane.MASTER_PEN_COLOR;
 
     public HighLightController(MKPGlassPane panel,ViewingTransform vTransform) {
 
@@ -85,7 +87,7 @@ public class HighLightController implements MKPGlassUI {
     //
     // Methods
     // 
-    public void mark(double[] min,double[] max) {
+    public void mark(double[] min,double[] max,Color color) {
 
         Coords2D dcPoint1 = new Coords2D();
         Coords2D wcPoint1 = new Coords2D(min);
@@ -101,6 +103,7 @@ public class HighLightController implements MKPGlassUI {
 	point2_ = new Point((int)Math.round(dcPoint2.getX()),(int)Math.round(dcPoint2.getY()));
 
 	myPen_ = false;
+	theirColor = color;
 
 	installedPanel_.invalidate();
 	installedPanel_.repaint();
@@ -135,7 +138,7 @@ public class HighLightController implements MKPGlassUI {
 
 	Color org_color = g2d.getColor();
 	if (!myPen_) {
-		g2d.setColor(Color.RED);
+		g2d.setColor(theirColor);
 		myPen_ = true;
 	}
 		

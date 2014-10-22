@@ -19,6 +19,7 @@ import org.xml.sax.XMLReader;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,6 +31,16 @@ import rpn.message.RPnNetworkStatus;
 public class MKPCommandModule {
 
     public static String SESSION_ID_ = "8888";
+    public static HashMap<String,String> PEN_COLOR_MAP = new HashMap<String,String>();
+
+    public static Color pickPenColor(String color) {
+
+	if (color.compareTo("Blue") == 0) return Color.BLUE;
+	if (color.compareTo("Yellow") == 0) return  Color.YELLOW;
+
+	return MKPGlassPane.MASTER_PEN_COLOR;
+
+    }
 
     public static void setPupilColor(String color) {
 
@@ -102,7 +113,12 @@ public class MKPCommandModule {
 
                 if (currentCommand_.equalsIgnoreCase("MARK")) {
 
-                   MKPGlassFrame.instance().execMarkCommand(mins_,maxs_);
+		   
+		   Color penColor = MKPGlassPane.MASTER_PEN_COLOR;
+		   if (PEN_COLOR_MAP.containsKey(senderID_))
+		   	penColor = (Color)pickPenColor(PEN_COLOR_MAP.get(senderID_));
+
+                   MKPGlassFrame.instance().execMarkCommand(mins_,maxs_,penColor);
 
                 } else
 

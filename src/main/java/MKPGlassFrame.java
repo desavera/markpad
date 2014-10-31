@@ -169,16 +169,6 @@ public class MKPGlassFrame extends JFrame {
 
     }
 
-    public void execSetPupilColorCommand(String color) {
-
-	if (color.compareTo("Blue") == 0) 
-		pad_.setMarkColor(Color.blue);
-	if (color.compareTo("Yellow") == 0) 
-		pad_.setMarkColor(Color.yellow);
-
-
-    }
-
     public void execSetPadBackgroundCommand(SerializableBufferedImage bi) {
 
 	// ONLY PUPILS SHOULD RUN THIS !!! 
@@ -225,16 +215,17 @@ public class MKPGlassFrame extends JFrame {
 	pad_.clear();
     }
 
-    public synchronized void execMarkCommand(String mins,String maxs,Color penColor) {
+    public synchronized void execMarkCommand(String mins,String maxs) {
 
         Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO, "MARK command recieved...");
+
 
 	if (isVisible()) {
 
 		double[] p1 = new RealVector(mins).toDouble();
 		double[] p2 = new RealVector(maxs).toDouble();
 
-		pad_.highLightController_.mark(p1,p2,penColor);
+		pad_.highLightController_.mark(p1,p2);
 
 		pad_.invalidate();
 		pad_.repaint();
@@ -248,6 +239,9 @@ public class MKPGlassFrame extends JFrame {
     }
 
     public synchronized void execDrawCommand(SerializablePathIterator it) {
+
+        Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO, "MARK command recieved...");
+
 
 	pad_.drawController_.updatePath(it);
 

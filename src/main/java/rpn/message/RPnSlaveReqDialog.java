@@ -33,7 +33,8 @@ public class RPnSlaveReqDialog extends JDialog {
 
     BorderLayout gridLayout = new BorderLayout();
 
-    String colorChosen = new String("Blue");
+    // the first selection is null... 
+    Integer colorChosen = null;
 
     public JLabel infoLabel = new JLabel("A request for joining the session has arrived from : ");
 
@@ -60,17 +61,17 @@ public class RPnSlaveReqDialog extends JDialog {
         setResizable(false);
         setTitle("RPn Session Access Grant");
 
-	MKPCommandModule.PEN_COLOR_MAP.put(clientID,"Blue");
+	colorCombo.addItem(new Integer(Color.BLUE.getRGB()));
+	colorCombo.addItem(new Integer(Color.YELLOW.getRGB()));
+
 
         infoLabel.setText(infoLabel.getText() + clientID);
         infoPanel.add(infoLabel);
 
-	colorCombo.addItem("Blue");
-	colorCombo.addItem("Yellow");
 
 	colorCombo.addActionListener(new ActionListener() {
       		public void actionPerformed(ActionEvent e) {
-       		 colorChosen = (String)((JComboBox) e.getSource()).getSelectedItem();
+       		 colorChosen = (Integer)((JComboBox) e.getSource()).getSelectedItem();
 		 MKPCommandModule.PEN_COLOR_MAP.put(clientID,colorChosen);
       		}
     	});
@@ -119,6 +120,14 @@ public class RPnSlaveReqDialog extends JDialog {
     void allowButton_actionPerformed(ActionEvent e) {
 
         RPnHttpPublisher publisher = new RPnHttpPublisher(RPnNetworkStatus.RPN_SLAVE_ACK_TOPIC_NAME);
+
+	if (colorChosen == null) {
+
+		colorChosen = new Integer(Color.BLUE.getRGB());
+		MKPCommandModule.PEN_COLOR_MAP.put(clientID,colorChosen);
+
+	}
+
         publisher.publish(RPnNetworkStatus.SLAVE_ACK_LOG_MSG + '|' + clientID + '|' + RPnNetworkStatus.instance().aspectRatio() + '|' + colorChosen);
         publisher.close();
 

@@ -27,8 +27,6 @@ public class HighLightController implements MKPGlassUI {
 
     private boolean myPen_ = true;
  
-    private Color theirColor = MKPGlassPane.MASTER_PEN_COLOR;
-
     public HighLightController(MKPGlassPane panel,ViewingTransform vTransform) {
 
        doClear_ = false;
@@ -87,7 +85,7 @@ public class HighLightController implements MKPGlassUI {
     //
     // Methods
     // 
-    public void mark(double[] min,double[] max,Color color) {
+    public void mark(double[] min,double[] max) {
 
         Coords2D dcPoint1 = new Coords2D();
         Coords2D wcPoint1 = new Coords2D(min);
@@ -103,7 +101,6 @@ public class HighLightController implements MKPGlassUI {
 	point2_ = new Point((int)Math.round(dcPoint2.getX()),(int)Math.round(dcPoint2.getY()));
 
 	myPen_ = false;
-	theirColor = color;
 
 	installedPanel_.invalidate();
 	installedPanel_.repaint();
@@ -136,12 +133,23 @@ public class HighLightController implements MKPGlassUI {
 
     	Graphics2D g2d = (Graphics2D) g;
 
-	Color org_color = g2d.getColor();
 	if (!myPen_) {
-		g2d.setColor(theirColor);
+
+		if (RPnNetworkStatus.instance().isOnline() && RPnNetworkStatus.instance().isMaster())
+			g2d.setColor(MKPGlassPane.PUPIL_PEN_COLOR);
+		else
+			g2d.setColor(MKPGlassPane.MASTER_PEN_COLOR);
+
 		myPen_ = true;
+
+	} else {
+
+		if (RPnNetworkStatus.instance().isOnline() && RPnNetworkStatus.instance().isMaster())
+			g2d.setColor(MKPGlassPane.MASTER_PEN_COLOR);
+		else
+			g2d.setColor(MKPGlassPane.PUPIL_PEN_COLOR);
 	}
-		
+
     	if(point1_!=null && point2_!=null){
 
        	   g2d.setStroke(new BasicStroke(2.0f));
@@ -152,7 +160,6 @@ public class HighLightController implements MKPGlassUI {
        	                point2_.y - point1_.y);
     	}
 
-	g2d.setColor(org_color);
    }   
 
    public void clear() {
@@ -164,4 +171,3 @@ public class HighLightController implements MKPGlassUI {
 	installedPanel_.repaint();
   }
 }
-

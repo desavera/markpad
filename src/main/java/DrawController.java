@@ -187,18 +187,16 @@ public class DrawController implements MKPGlassUI  {
     public void paintComponent(Graphics g) {
                
 	Stroke stroke = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0,new float[] { 3, 1 }, 0);
-	Color org_color = g.getColor();
 
         if (!myPen_) {
-                g.setColor(Color.RED);
+                g.setColor(MKPGlassPane.MASTER_PEN_COLOR);
 		myPen_ = true;
-	}
+	} else 
+                g.setColor(MKPGlassPane.PUPIL_PEN_COLOR);
 
 
     	((Graphics2D)g).setStroke(stroke);
         ((Graphics2D)g).draw(path_);
-
-	g.setColor(org_color);
     }
 
     public void clear() {

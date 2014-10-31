@@ -27,12 +27,13 @@ public class MKPGlassPane extends JPanel {
 
   public static Color MASTER_PEN_COLOR = Color.RED;
 
+  // this will be set by MASTER...
+  public static Color PUPIL_PEN_COLOR = MASTER_PEN_COLOR;
 
   Boolean doClear_;
   HighLightController highLightController_;
   DrawController drawController_;
 
-  Color myPenColor = MASTER_PEN_COLOR;
 
   MKPGlassUI currentController_;	
   MKPGlassFrame parentFrame_;
@@ -63,8 +64,6 @@ public class MKPGlassPane extends JPanel {
 
   public MKPGlassUI getController() {return currentController_;}
   public void setBackgroundImage(SerializableBufferedImage image) { backgroundImage_ = image;}
-  public void setMarkColor(Color color) {myPenColor = color;}
-  public Color getMarkColor() {return myPenColor;}
 
   /*
    * no need to keep switching modes over the network...
@@ -87,6 +86,7 @@ public class MKPGlassPane extends JPanel {
 		//menu_.setDrawState();
 	}
 
+	clear();
 	currentController_.install(this);
   }
 
@@ -137,10 +137,6 @@ public class MKPGlassPane extends JPanel {
    } else  { // already initiated ... so we have a mode !
 
 		//g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.5f));
-		//if (currentController_ != null)
-		//	currentController_.paintComponent(g);
-
-		g.setColor(myPenColor);	
 		drawController_.paintComponent(g);
 		highLightController_.paintComponent(g);
 	}
@@ -443,8 +439,9 @@ class MKPControlMenu extends JPopupMenu {
 
                     public void actionPerformed(ActionEvent e) {
 
-			Color color = JColorChooser.showDialog(renderer_.parentFrame_,"Pick a Color",Color.GREEN);
-			renderer_.setMarkColor(color);
+			// this will brake the whole thing up... NOT ALLOWED TO CHANGE PUPILs COLOR...
+			//Color color = JColorChooser.showDialog(renderer_.parentFrame_,"Pick a Color",Color.GREEN);
+			//renderer_.setPenColor(color);
                     }
                 });
 

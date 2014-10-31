@@ -158,10 +158,7 @@ public class RPnNetworkStatus {
     public void log(String logMessage) {
 
         RPnNetworkDialog.infoText.append(logMessage + '\n');
-
-
     }
-
 
     public void connect(String clientID,boolean isMaster,boolean isFirewalled,String aspect) {
 
@@ -545,7 +542,7 @@ public class RPnNetworkStatus {
 	    	JOptionPane.showMessageDialog(null,
 					  "Please adjust your aspect ratio to " + master_aspect, "Aspect Warning", JOptionPane.WARNING_MESSAGE);
 
-	    MKPCommandModule.setPupilColor(pupilColor);
+	    MKPCommandModule.setPupilPenColor(pupilColor);
 
 
             // TODO > disable ALL interface

@@ -31,20 +31,13 @@ import rpn.message.RPnNetworkStatus;
 public class MKPCommandModule {
 
     public static String SESSION_ID_ = "8888";
-    public static HashMap<String,String> PEN_COLOR_MAP = new HashMap<String,String>();
+    public static HashMap<String,Integer> PEN_COLOR_MAP = new HashMap<String,Integer>();
 
-    public static Color pickPenColor(String color) {
+    public static void setPupilPenColor(String sColorRGB) {
 
-	if (color.compareTo("Blue") == 0) return Color.BLUE;
-	if (color.compareTo("Yellow") == 0) return  Color.YELLOW;
+	// the string represents the color rgb index
+	MKPGlassPane.PUPIL_PEN_COLOR = new Color(Integer.parseInt(sColorRGB));
 
-	return MKPGlassPane.MASTER_PEN_COLOR;
-
-    }
-
-    public static void setPupilColor(String color) {
-
-	MKPGlassFrame.instance().execSetPupilColorCommand(color);
     }
 
     static public class MKPCommandParser implements ContentHandler {
@@ -114,11 +107,18 @@ public class MKPCommandModule {
                 if (currentCommand_.equalsIgnoreCase("MARK")) {
 
 		   
-		   Color penColor = MKPGlassPane.MASTER_PEN_COLOR;
-		   if (PEN_COLOR_MAP.containsKey(senderID_))
-		   	penColor = (Color)pickPenColor(PEN_COLOR_MAP.get(senderID_));
+		   if (RPnNetworkStatus.instance().isOnline() && RPnNetworkStatus.instance().isMaster()) {
 
-                   MKPGlassFrame.instance().execMarkCommand(mins_,maxs_,penColor);
+			// a PUPIL has marked something...
+		   	if (PEN_COLOR_MAP.containsKey(senderID_)) {
+
+				System.out.println("yes we got a color for..." + senderID_);
+		   		MKPGlassPane.PUPIL_PEN_COLOR = new Color((Integer)PEN_COLOR_MAP.get(senderID_).intValue());
+			}
+		   }
+
+
+                   MKPGlassFrame.instance().execMarkCommand(mins_,maxs_);
 
                 } else
 

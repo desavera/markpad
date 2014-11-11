@@ -1,5 +1,5 @@
 #!/bin/bash
 
-libdir=../lib
+libdir=~/oficina/impa/fluid/markpad/lib
 
-java -Dmkphome=.. -jar ../lib/mkp.jar
+java -Dmkphome=.. -jar ~/oficina/impa/fluid/markpad/lib/mkp.jar

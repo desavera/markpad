@@ -289,19 +289,14 @@ public class MKPGlassFrame extends JFrame {
 
         // If translucent windows aren't supported, exit.
         if (!gd.isWindowTranslucencySupported(TRANSLUCENT)) {
-            System.err.println(
-                "Translucency is not supported");
 
-        } else TRANSLUCENCY_SUPPORT = true;
+		System.err.println("Translucency is not supported");
+		JOptionPane.showMessageDialog(null,"Translucency is not supported");
+		
+        } else 
+	
+	    TRANSLUCENCY_SUPPORT = true;
 
-	// check for JNLP support...
-	try {
-   	   basicService = (BasicService)
-       	   ServiceManager.lookup("javax.jnlp.BasicService");
-    	} catch (UnavailableServiceException e) {
-      	   System.err.println("Lookup failed: " + e);
-    	}
-        
         //JFrame.setDefaultLookAndFeelDecorated(true);
 
         // Create the GUI on the event-dispatching thread
